@@ -1,8 +1,15 @@
+# pylint: disable=invalid-name
+# pylint: disable=no-name-in-module
+# pylint: disable=no-member
+# pylint: disable=missing-function-docstring
+# pylint: disable=missing-module-docstring
+# pylint: disable=protected-access
+
 import os
 import pathlib
 import requests
 import flask
-from flask import session, abort, redirect, request, url_for
+from flask import session, abort, request
 from flask_login import (
     LoginManager,
     current_user,
@@ -97,11 +104,10 @@ def index():
 # Main portion of the app after user has logged in
 @app.route("/meal_deck")
 def meal_deck():
-    if current_user.is_authenticated: #if authenticated, go to main page
+    if current_user.is_authenticated:  # if authenticated, go to main page
         return flask.render_template("mealdeck.html", username=current_user.username)
-    else:
-        flask.flash("You must be logged in to access this page!")
-        return flask.redirect("/")
+    flask.flash("You must be logged in to access this page!")
+    return flask.redirect("/")
 
 
 app.run()

@@ -1,3 +1,7 @@
+# pylint: disable=invalid-name
+# pylint: disable=missing-module-docstring
+# pylint: disable=missing-class-docstring
+# pylint: disable=no-member
 import flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
