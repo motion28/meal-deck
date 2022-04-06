@@ -97,9 +97,10 @@ def index():
 # Main portion of the app after user has logged in
 @app.route("/meal_deck")
 def meal_deck():
-    if current_user.is_authenticated:
+    if current_user.is_authenticated: #if authenticated, go to main page
         return flask.render_template("mealdeck.html", username=current_user.username)
     else:
+        flask.flash("You must be logged in to access this page!")
         return flask.redirect("/")
 
 

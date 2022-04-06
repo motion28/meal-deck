@@ -13,4 +13,8 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(100), unique=True, nullable=False)
 
 
+# class Favorites(db.Model):
+# id = db.Column(db.Integer, primary_key=True)
+
+
 db.create_all()
