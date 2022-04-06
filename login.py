@@ -74,8 +74,6 @@ def callback():
         clock_skew_in_seconds=10,  # allows system time to be up to 10 seconds off from server time
     )
 
-    session["google_id"] = id_info.get("sub")
-    session["name"] = id_info.get("name")
     name = id_info.get("name")
     exists = User.query.filter_by(username=name).first()
     if not exists:
@@ -87,6 +85,7 @@ def callback():
 
 
 @app.route("/logout")
+@login_required
 def logout():
     logout_user()
     return flask.redirect("/")
