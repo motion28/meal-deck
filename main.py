@@ -1,53 +1,54 @@
 import os
-from urllib import response
 import flask
-import requests
-
+import food_api
 from dotenv import find_dotenv, load_dotenv
 
 load_dotenv(find_dotenv())
 
 app = flask.Flask(__name__)
 
-BASE_URL = "https://api.spoonacular.com/recipes/complexSearch"
-
-
-query_params = {
-    "apiKey": os.getenv("SPOON_key"),
-    "query": "burger",
-    "instructionsRequired": "true",
-    "addRecipeInformation": "true",
-}
-
-response = requests.get(BASE_URL, params=query_params)
-
-# json response from API
-recipes = response.json()
-recipe = recipes["results"][0]
-recipe_id = recipe["id"]
-recipe_title = recipe["title"]
-recipe_image = recipe["image"]
-recipe_time = recipe["readyInMinutes"]
-recipe_steps = recipe["analyzedInstructions"][0]["steps"]
-steps = list(recipe_steps)
-
-for step in steps:
-    actual_steps=(step["step"])
-    print(actual_steps)
-
-#return all steps of the recipe
-# recipe_sum = recipe["summary"]
-
-@app.route("/")
+@app.route('/')
 def index():
+    return flask.render_template('index.html')
+
+@app.route('/get-food')
+def get_food():
+    search_input = flask.request.args.get('food_input').lower()
+    search_term = str(search_input)
+    food_recipe = food_api.recipe_call(search_input)
+
+    recipe_title = food_recipe[0][0]
+    recipe_image = food_recipe[0][1]
+    recipe_ingredients = food_recipe[0][2]
+    recipe_instructions = food_recipe[0][3]
+
+    recipe_title2 = food_recipe[1][0]
+    recipe_image2 = food_recipe[1][1]
+    recipe_ingredients2 = food_recipe[1][2]
+    recipe_instructions2 = food_recipe[1][3]
+
+    recipe_title3 = food_recipe[2][0]
+    recipe_image3 = food_recipe[2][1]
+    recipe_ingredients3 = food_recipe[2][2]
+    recipe_instructions3 = food_recipe[2][3]
+
+    
     return flask.render_template(
-        "index.html",
-        recipe=recipe,
+        'food.html',
+        search_term=search_term, 
         recipe_title=recipe_title,
-        recipe_time=recipe_time,
         recipe_image=recipe_image,
-        actual_steps=actual_steps,
-        # recipe_sum=recipe_sum,
+        recipe_ingredients=recipe_ingredients, 
+        recipe_instructions=recipe_instructions,
+        recipe_title2=recipe_title2,
+        recipe_image2=recipe_image2,
+        recipe_ingredients2=recipe_ingredients2, 
+        recipe_instructions2=recipe_instructions2,
+        recipe_title3=recipe_title3,
+        recipe_image3=recipe_image3,
+        recipe_ingredients3=recipe_ingredients3, 
+        recipe_instructions3=recipe_instructions3,
+        search_success=True
     )
 
 app.run(host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", 8080)), debug=True)
