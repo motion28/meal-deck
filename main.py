@@ -1,10 +1,16 @@
+# pylint: disable=invalid-name
+# pylint: disable=missing-module-docstring
+# pylint: disable=missing-class-docstring
+# pylint: disable=no-member
+# pylint: disable=protected-access
+
 import os
 import pathlib
 import requests
 import flask
 import food_api
-import flask_sqlalchemy
-import time
+import google.auth.transport.requests
+
 from flask import session, abort, request
 from flask_login import (
     LoginManager,
@@ -17,7 +23,6 @@ from dotenv import find_dotenv, load_dotenv
 from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
 from pip._vendor import cachecontrol
-import google.auth.transport.requests
 from models import app, db, User
 
 load_dotenv(find_dotenv())
@@ -31,11 +36,17 @@ login_manager.init_app(app)
 
 @login_manager.unauthorized_handler
 def unauthorized():
+    """
+    This function checks if user logged in before accessing content
+    """
     return "You must be logged in to access this content.", 403
 
 
 @login_manager.user_loader
 def load_user(user_name):
+    """
+    This function gets username and send it as query
+    """
     return User.query.get(user_name)
 
 
@@ -54,6 +65,9 @@ flow = Flow.from_client_secrets_file(
 
 @app.route("/login")
 def login():
+    """
+    This function routes to login page
+    """
     authorization_url, state = flow.authorization_url()
     session["state"] = state
     return flask.redirect(authorization_url)
@@ -61,6 +75,9 @@ def login():
 
 @app.route("/callback")
 def callback():
+    """
+    This function handles logins via google account
+    """
     flow.fetch_token(authorization_response=request.url)
     if not session["state"] == request.args["state"]:
         abort(500)
@@ -89,18 +106,26 @@ def callback():
 @app.route("/logout")
 @login_required
 def logout():
+    """
+    This function redirects to root page
+    """
     logout_user()
     return flask.redirect("/")
 
 
 @app.route("/")
 def index():
+    """
+    This function routes to login page
+    """
     return flask.render_template("login.html")
 
 
-# Main portion of the app after user has logged in
 @app.route("/meal_deck")
 def meal_deck():
+    """
+    Main portion of the app after user has logged in
+    """
     if current_user.is_authenticated:  # if authenticated, go to main page
         return flask.render_template("index.html", username=current_user.username)
     flask.flash("You must be logged in to access this page!")
@@ -109,6 +134,9 @@ def meal_deck():
 
 @app.route('/get-food')
 def get_food():
+    """
+    Function in charge of getting food input and display result of user's search
+    """
     search_input = flask.request.args.get('food_input').lower()
     search_term = str(search_input)
     food_recipe = food_api.recipe_call(search_input)
@@ -127,7 +155,7 @@ def get_food():
     recipe_image3 = food_recipe[2][1]
     recipe_ingredients3 = food_recipe[2][2]
     recipe_instructions3 = food_recipe[2][3]
-    
+
     return flask.render_template(
         'food.html',
         search_term=search_term, 
@@ -135,10 +163,12 @@ def get_food():
         recipe_image=recipe_image,
         recipe_ingredients=recipe_ingredients, 
         recipe_instructions=recipe_instructions,
+
         recipe_title2=recipe_title2,
         recipe_image2=recipe_image2,
         recipe_ingredients2=recipe_ingredients2, 
         recipe_instructions2=recipe_instructions2,
+
         recipe_title3=recipe_title3,
         recipe_image3=recipe_image3,
         recipe_ingredients3=recipe_ingredients3, 

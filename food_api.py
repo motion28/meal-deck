@@ -1,14 +1,21 @@
-import requests
+# pylint: disable=invalid-name
+# pylint: disable=missing-module-docstring
+# pylint: disable=missing-class-docstring
+# pylint: disable=no-member
+# pylint: disable=line-too-long
+
 import os
+import requests
 from dotenv import find_dotenv, load_dotenv
 
 load_dotenv(find_dotenv())
 
 
 def recipe_call(search_term):
-    # uses search term and returns most popular result (1, can be modified in url at the end '&number=')
-    # returns results only containing an ingredients list and cooking instructions
-
+    """
+    uses search term and returns most popular result (1, can be modified in url at the end '&number=').
+    returns results only containing an ingredients list and cooking instructions
+    """
     RECIPE_API_KEY = os.getenv("SPOON_key")
 
     url = f'https://api.spoonacular.com/recipes/complexSearch?query={search_term}&apiKey={RECIPE_API_KEY}&addRecipeInformation=True&fillIngredients=True&number=3'
@@ -16,7 +23,6 @@ def recipe_call(search_term):
     results = data_recipes['results'][0]
     results2 = data_recipes['results'][1]
     results3 = data_recipes['results'][2]
-    
 
     # container for 3 recipes
     recipe = []
@@ -101,4 +107,3 @@ def recipe_call(search_term):
 #print(r[2][0])
 # print(r[2][1])
 # print(r[2][2])
-
