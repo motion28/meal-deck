@@ -24,6 +24,12 @@ os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"  # set environment to HTTPS
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 
 app.secret_key = bytes(os.getenv("session_key"), "utf8")
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+if app.config["SQLALCHEMY_DATABASE_URI"].startswith("postgres://"):
+    app.config["SQLALCHEMY_DATABASE_URI"] = app.config[
+        "SQLALCHEMY_DATABASE_URI"
+    ].replace("postgres://", "postgresql://")
 
 login_manager = LoginManager()
 login_manager.init_app(app)
