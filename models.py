@@ -8,7 +8,7 @@ from flask_login import UserMixin
 
 
 app = flask.Flask(__name__)
-app.secret_key = "Secret"
+#app.secret_key = "Secret"
 db = SQLAlchemy(app)
 
 
