@@ -4,7 +4,6 @@ import requests
 import flask
 import food_api
 import flask_sqlalchemy
-import time
 from flask import session, abort, request
 from flask_login import (
     LoginManager,
@@ -145,6 +144,6 @@ def get_food():
         recipe_instructions3=recipe_instructions3,
         search_success=True
     )
-app.run(debug=True)
+# app.run(debug=True)
 
-#app.run(host='0.0.0.0', port=int(os.getenv("PORT", 8080)), debug=True)
+app.run(host='0.0.0.0', port=int(os.getenv("PORT", 8080)), debug=True)
