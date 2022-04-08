@@ -1,0 +1,17 @@
+<html>
+
+<head>Welcome, {{username}}! Your meal deck is here!</head>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{%for message in messages %}
+<b>{{message}}</b>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<body>
+    <p></p>
+    <a href='/logout'><button>Logout</button></a>
+</body>
+
+</html>
