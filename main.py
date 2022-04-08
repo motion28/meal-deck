@@ -17,11 +17,13 @@ from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
 from pip._vendor import cachecontrol
 import google.auth.transport.requests
-from models import app, db, User
+from models import db, User
 
 load_dotenv(find_dotenv())
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"  # set environment to HTTPS
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+
+app = flask.Flask(__name__)
 
 app.secret_key = bytes(os.getenv("session_key"), "utf8")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -31,8 +33,13 @@ if app.config["SQLALCHEMY_DATABASE_URI"].startswith("postgres://"):
         "SQLALCHEMY_DATABASE_URI"
     ].replace("postgres://", "postgresql://")
 
+db.init_app(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
+login_manager.login_view = "login"
+
+with app.app_context():
+    db.create_all()
 
 @login_manager.unauthorized_handler
 def unauthorized():
@@ -150,6 +157,6 @@ def get_food():
         recipe_instructions3=recipe_instructions3,
         search_success=True
     )
-# app.run(debug=True)
+app.run(debug=True)
 
-app.run(host='0.0.0.0', port=int(os.getenv("PORT", 8080)), debug=True)
+# app.run(host='0.0.0.0', port=int(os.getenv("PORT", 8080)), debug=True)
