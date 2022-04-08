@@ -4,7 +4,6 @@
 
 **Heroku Deployment:**
 
-*If you prefer setting up MealDeck to use for yourself:*
 ## Setup Instructions
 1. To install required libraries for Visual Studio Code, type the following command in the terminal:
 `pip3 install -r requirements.txt`
