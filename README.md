@@ -69,7 +69,7 @@ Then, you can search for food items in the app.
 
 ## Troubleshooting
 **ValueError: Token used too early/Token used too late issue**
-This issue occurs when your system time is out of sync with Google Servers
+This issue occurs when your system time is out of sync with Google Servers.
 One possible solution is to re-sync the system time: https://www.groovypost.com/howto/synchronize-clock-windows-10-with-internet-atomic-time/
 
 Another solution is to increase the clock skew tolerance. 

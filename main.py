@@ -29,6 +29,7 @@ app.secret_key = bytes(os.getenv("session_key"), "utf8")
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+
 @login_manager.unauthorized_handler
 def unauthorized():
     return "You must be logged in to access this content.", 403
@@ -107,9 +108,9 @@ def meal_deck():
     return flask.redirect("/")
 
 
-@app.route('/get-food')
+@app.route("/get-food")
 def get_food():
-    search_input = flask.request.args.get('food_input').lower()
+    search_input = flask.request.args.get("food_input").lower()
     search_term = str(search_input)
     food_recipe = food_api.recipe_call(search_input)
 
@@ -127,24 +128,27 @@ def get_food():
     recipe_image3 = food_recipe[2][1]
     recipe_ingredients3 = food_recipe[2][2]
     recipe_instructions3 = food_recipe[2][3]
-    
+
     return flask.render_template(
-        'food.html',
-        search_term=search_term, 
+        "food.html",
+        username=current_user.username,
+        search_term=search_term,
         recipe_title=recipe_title,
         recipe_image=recipe_image,
-        recipe_ingredients=recipe_ingredients, 
+        recipe_ingredients=recipe_ingredients,
         recipe_instructions=recipe_instructions,
         recipe_title2=recipe_title2,
         recipe_image2=recipe_image2,
-        recipe_ingredients2=recipe_ingredients2, 
+        recipe_ingredients2=recipe_ingredients2,
         recipe_instructions2=recipe_instructions2,
         recipe_title3=recipe_title3,
         recipe_image3=recipe_image3,
-        recipe_ingredients3=recipe_ingredients3, 
+        recipe_ingredients3=recipe_ingredients3,
         recipe_instructions3=recipe_instructions3,
-        search_success=True
+        search_success=True,
     )
+
+
 app.run(debug=True)
 
-#app.run(host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", 8080)), debug=True)
+# app.run(host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", 8080)), debug=True)
