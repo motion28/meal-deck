@@ -109,6 +109,7 @@ def meal_deck():
 
 
 @app.route("/get-food")
+@login_required
 def get_food():
     search_input = flask.request.args.get("food_input").lower()
     search_term = str(search_input)
