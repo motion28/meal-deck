@@ -6,6 +6,7 @@ import google.auth.transport.requests
 import food_api
 import flask_sqlalchemy
 import time
+import json
 from flask import session, abort, request
 from flask_login import (
     LoginManager,
@@ -24,6 +25,7 @@ from models import app, db, User
 load_dotenv(find_dotenv())
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"  # set environment to HTTPS
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
 
 app.secret_key = bytes(os.getenv("session_key"), "utf8")
 
@@ -41,6 +43,20 @@ def load_user(user_name):
     return User.query.get(user_name)
 
 
+secrets = {
+    "web": {
+        "client_id": GOOGLE_CLIENT_ID,
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_secret": GOOGLE_CLIENT_SECRET,
+        "redirect_uris": ["http://127.0.0.1:5000/callback"],
+    }
+}
+__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+f = open(os.path.join(__location__, "client_secrets.json"), "w")
+f.write(json.dumps(secrets))
+f.close()
 client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "client_secrets.json")
 
 flow = Flow.from_client_secrets_file(
@@ -110,6 +126,8 @@ def meal_deck():
 
 
 @app.route("/get-food")
+@login_required
+
 def get_food():
     search_input = flask.request.args.get("food_input").lower()
     search_term = str(search_input)
@@ -132,6 +150,7 @@ def get_food():
 
     return flask.render_template(
         "food.html",
+        username=current_user.username,
         search_term=search_term,
         recipe_title=recipe_title,
         recipe_image=recipe_image,
