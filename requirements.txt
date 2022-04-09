@@ -6,3 +6,4 @@ google-auth-oauthlib
 requests
 requests-oauthlib
 python-dotenv
+psycopg2
