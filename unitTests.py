@@ -99,6 +99,10 @@ class test_get_food(unittest.TestCase):
 
 
 class test_main_py(unittest.TestCase):
+        """
+        This test will check existence of client_secrets.json and tests if env
+        has all the variables
+        """
     def client_secrets_exists(self):
         secretsPath = os.path.join(pathlib.Path(__file__).parent, "client_secrets.json")
         self.assertIsFile(secretsPath)
