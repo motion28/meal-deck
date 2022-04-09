@@ -8,9 +8,9 @@ import os
 import pathlib
 import requests
 import flask
-import food_api
 import google.auth.transport.requests
-
+import food_api
+import json
 from flask import session, abort, request
 from flask_login import (
     LoginManager,
@@ -28,11 +28,13 @@ from models import app, db, User
 load_dotenv(find_dotenv())
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"  # set environment to HTTPS
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
 
 app.secret_key = bytes(os.getenv("session_key"), "utf8")
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+
 
 @login_manager.unauthorized_handler
 def unauthorized():
@@ -50,6 +52,20 @@ def load_user(user_name):
     return User.query.get(user_name)
 
 
+secrets = {
+    "web": {
+        "client_id": GOOGLE_CLIENT_ID,
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_secret": GOOGLE_CLIENT_SECRET,
+        "redirect_uris": ["http://127.0.0.1:5000/callback"],
+    }
+}
+__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+f = open(os.path.join(__location__, "client_secrets.json"), "w")
+f.write(json.dumps(secrets))
+f.close()
 client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "client_secrets.json")
 
 flow = Flow.from_client_secrets_file(
@@ -132,7 +148,8 @@ def meal_deck():
     return flask.redirect("/")
 
 
-@app.route('/get-food')
+@app.route("/get-food")
+@login_required
 def get_food():
     """
     Function in charge of getting food input and display result of user's search
@@ -157,24 +174,26 @@ def get_food():
     recipe_instructions3 = food_recipe[2][3]
 
     return flask.render_template(
-        'food.html',
-        search_term=search_term, 
+        "food.html",
+        username=current_user.username,
+        search_term=search_term,
         recipe_title=recipe_title,
         recipe_image=recipe_image,
-        recipe_ingredients=recipe_ingredients, 
+        recipe_ingredients=recipe_ingredients,
         recipe_instructions=recipe_instructions,
 
         recipe_title2=recipe_title2,
         recipe_image2=recipe_image2,
-        recipe_ingredients2=recipe_ingredients2, 
+        recipe_ingredients2=recipe_ingredients2,
         recipe_instructions2=recipe_instructions2,
 
         recipe_title3=recipe_title3,
         recipe_image3=recipe_image3,
-        recipe_ingredients3=recipe_ingredients3, 
+        recipe_ingredients3=recipe_ingredients3,
         recipe_instructions3=recipe_instructions3,
-        search_success=True
+        search_success=True,
     )
-app.run(debug=True)
 
+app.run(debug=True)
 #app.run(host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", 8080)), debug=True)
+
