@@ -5,6 +5,7 @@ import flask
 import food_api
 import flask_sqlalchemy
 import time
+import json
 from flask import session, abort, request
 from flask_login import (
     LoginManager,
@@ -23,6 +24,7 @@ from models import app, db, User
 load_dotenv(find_dotenv())
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"  # set environment to HTTPS
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
 
 app.secret_key = bytes(os.getenv("session_key"), "utf8")
 
@@ -40,6 +42,19 @@ def load_user(user_name):
     return User.query.get(user_name)
 
 
+a = {
+    "web": {
+        "client_id": os.getenv(GOOGLE_CLIENT_ID),
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_secret": os.getenv(GOOGLE_CLIENT_SECRET),
+        "redirect_uris": ["http://127.0.0.1:5000/callback"],
+    }
+}
+
+f = open("client_secrets.json", "w")
+f.write(json.dumps(a))
 client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "client_secrets.json")
 
 flow = Flow.from_client_secrets_file(
