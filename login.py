@@ -109,5 +109,4 @@ def meal_deck():
     flask.flash("You must be logged in to access this page!")
     return flask.redirect("/")
 
-
 app.run()

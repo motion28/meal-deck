@@ -2,6 +2,7 @@ import os
 import pathlib
 import requests
 import flask
+import google.auth.transport.requests
 import food_api
 import flask_sqlalchemy
 import time
@@ -18,7 +19,7 @@ from dotenv import find_dotenv, load_dotenv
 from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
 from pip._vendor import cachecontrol
-import google.auth.transport.requests
+
 from models import app, db, User
 
 load_dotenv(find_dotenv())
@@ -126,6 +127,7 @@ def meal_deck():
 
 @app.route("/get-food")
 @login_required
+
 def get_food():
     search_input = flask.request.args.get("food_input").lower()
     search_term = str(search_input)
