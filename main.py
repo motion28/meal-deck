@@ -56,6 +56,7 @@ __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file
 f = open(os.path.join(__location__, "client_secrets.json"), "w")
 f.write(json.dumps(secrets))
 f.close()
+
 client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "client_secrets.json")
 
 flow = Flow.from_client_secrets_file(
