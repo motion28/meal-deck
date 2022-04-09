@@ -20,18 +20,30 @@ from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
 from pip._vendor import cachecontrol
 
-from models import app, db, User
+from models import db, User
 
 load_dotenv(find_dotenv())
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"  # set environment to HTTPS
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
 
-app.secret_key = bytes(os.getenv("session_key"), "utf8")
+app = flask.Flask(__name__)
 
+app.secret_key = bytes(os.getenv("session_key"), "utf8")
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+if app.config["SQLALCHEMY_DATABASE_URI"].startswith("postgres://"):
+    app.config["SQLALCHEMY_DATABASE_URI"] = app.config[
+        "SQLALCHEMY_DATABASE_URI"
+    ].replace("postgres://", "postgresql://")
+
+db.init_app(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
+login_manager.login_view = "login"
 
+with app.app_context():
+    db.create_all()
 
 @login_manager.unauthorized_handler
 def unauthorized():
