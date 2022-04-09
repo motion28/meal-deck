@@ -9,7 +9,7 @@
 `pip3 install -r requirements.txt`
 2. To setup this program for running, we need **Google Client** and **Spoonacular API** prepared:
 
-**Two files need to be created: .env file and client_secrets.json file**
+**We need to setup .env file**
 
 **Google Client Setup:**
 To setup Google Client, first create a Google account if you don't have one.
@@ -38,24 +38,6 @@ SPOON_key="Insert your SPOONACULAR key"
 GOOGLE_CLIENT_ID="Insert your GOOGLE CLIENT key"
 secret_key="Insert ANYTHING you want"
 session_key="Insert ANYTHING you want"
-```
-
-**client_secrets.json Setup:**
-Create a client_secrets.json file in the top directory of the project folder.
-Then, copy the below code, replacing the insert directions accordingly.
-```
-{
-  "web": {
-    "client_id": "Insert your Google Client ID Key",
-    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-    "token_uri": "https://oauth2.googleapis.com/token",
-    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-    "client_secret": "Insert your Google Client Secret Key",
-    "redirect_uris": [
-      "http://127.0.0.1:5000/callback"
-    ]
-  }
-}
 ```
 
 ## To Run MealDeck
