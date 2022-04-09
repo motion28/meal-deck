@@ -42,7 +42,7 @@ def load_user(user_name):
     return User.query.get(user_name)
 
 
-a = {
+secrets = {
     "web": {
         "client_id": os.getenv(GOOGLE_CLIENT_ID),
         "auth_uri": "https://accounts.google.com/o/oauth2/auth",
@@ -54,7 +54,7 @@ a = {
 }
 
 f = open("client_secrets.json", "w")
-f.write(json.dumps(a))
+f.write(json.dumps(secrets))
 client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "client_secrets.json")
 
 flow = Flow.from_client_secrets_file(
