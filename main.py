@@ -79,7 +79,7 @@ flow = Flow.from_client_secrets_file(
         "https://www.googleapis.com/auth/userinfo.email",
         "openid",
     ],
-    redirect_uri="http://127.0.0.1:5000/callback",
+    redirect_uri="https://pacific-springs-45744.herokuapp.com/auth/google/callback",
 )
 
 
