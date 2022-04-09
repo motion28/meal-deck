@@ -62,7 +62,8 @@ secrets = {
         "token_uri": "https://oauth2.googleapis.com/token",
         "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
         "client_secret": GOOGLE_CLIENT_SECRET,
-        "redirect_uris": ["http://127.0.0.1:5000/callback"],
+        "redirect_uris": ["http://127.0.0.1:5000/callback"], 
+        "redirect_uris": ["https://pacific-springs-45744.herokuapp.com/auth/google/callback"],
     }
 }
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
