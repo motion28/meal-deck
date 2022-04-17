@@ -24,7 +24,7 @@ from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
 from pip._vendor import cachecontrol
 
-from models import db, User
+from models import db, User, Recipe, Favorite
 
 load_dotenv(find_dotenv())
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"  # set environment to HTTPS
@@ -131,6 +131,7 @@ def callback():
 
     name = id_info.get("name")
     google_id = id_info.get("sub")
+    session["google_id"] = google_id
     exists = User.query.filter_by(google_id=google_id).first()
     if not exists:
         db.session.add(User(google_id=google_id, username=name))
@@ -194,6 +195,21 @@ def get_food():
         recipe_ingredients=recipe_ingredients,
         recipe_instructions=recipe_instructions,
         search_success=True,
+    )
+
+
+@app.route("/get_favorites")
+@login_required
+def get_favorites():
+    favorites = Favorite.query.filter_by(google_id=session["google_id"]).all()
+    return flask.jsonify(
+        [
+            {
+                "username": Favorite.username,
+                "recipe": Favorite.recipe,
+            }
+            for favorite in favorites
+        ]
     )
 
 
