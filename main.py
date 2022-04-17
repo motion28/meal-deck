@@ -178,38 +178,21 @@ def get_food():
     search_input = flask.request.args.get("food_input").lower()
     search_term = str(search_input)
     food_recipe = food_api.recipe_call(search_input)
-
-    recipe_title = food_recipe[0][0]
-    recipe_image = food_recipe[0][1]
-    recipe_ingredients = food_recipe[0][2]
-    recipe_instructions = food_recipe[0][3]
-
-    recipe_title2 = food_recipe[1][0]
-    recipe_image2 = food_recipe[1][1]
-    recipe_ingredients2 = food_recipe[1][2]
-    recipe_instructions2 = food_recipe[1][3]
-
-    recipe_title3 = food_recipe[2][0]
-    recipe_image3 = food_recipe[2][1]
-    recipe_ingredients3 = food_recipe[2][2]
-    recipe_instructions3 = food_recipe[2][3]
+    recipe_titles = food_recipe[0]  # 0th index -> titles
+    recipe_images = food_recipe[1]  # 1st index -> images
+    recipe_ingredients = food_recipe[2]  # 2nd index -> ingredients
+    recipe_instructions = food_recipe[3]  # 3rd index -> instructions
+    recipe_count = len(recipe_titles)  # recipe_count for looping purposes
 
     return flask.render_template(
         "food.html",
         username=current_user.username,
         search_term=search_term,
-        recipe_title=recipe_title,
-        recipe_image=recipe_image,
+        recipe_count=recipe_count,
+        recipe_titles=recipe_titles,
+        recipe_images=recipe_images,
         recipe_ingredients=recipe_ingredients,
         recipe_instructions=recipe_instructions,
-        recipe_title2=recipe_title2,
-        recipe_image2=recipe_image2,
-        recipe_ingredients2=recipe_ingredients2,
-        recipe_instructions2=recipe_instructions2,
-        recipe_title3=recipe_title3,
-        recipe_image3=recipe_image3,
-        recipe_ingredients3=recipe_ingredients3,
-        recipe_instructions3=recipe_instructions3,
         search_success=True,
     )
 

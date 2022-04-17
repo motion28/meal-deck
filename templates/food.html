@@ -15,47 +15,20 @@
         </div>
     </div>
 
-
-    <p>{{recipe_title}}</p>
-    <img src={{recipe_image}}>
+    {%for i in range(0, recipe_count)%}
+    <p>{{recipe_titles[i]}}</p>
+    <img src={{recipe_images[i]}}>
     <ul>
-        {% for ingredient in recipe_ingredients %}
+        {% for ingredient in recipe_ingredients[i] %}
         <li>{{ingredient}}</li>
         {% endfor %}
     </ul>
     <ol>
-        {% for instruction in recipe_instructions %}
+        {% for instruction in recipe_instructions[i] %}
         <li>{{instruction}}</li>
         {% endfor %}
     </ol>
-
-    <p>{{recipe_title2}}</p>
-    <img src={{recipe_image2}}>
-    <ul>
-        {% for ingredient in recipe_ingredients2 %}
-        <li>{{ingredient}}</li>
-        {% endfor %}
-    </ul>
-    <ol>
-        {% for instruction in recipe_instructions2 %}
-        <li>{{instruction}}</li>
-        {% endfor %}
-    </ol>
-
-    <p>{{recipe_title3}}</p>
-    <img src={{recipe_image3}}>
-    <ul>
-        {% for ingredient in recipe_ingredients3 %}
-        <li>{{ingredient}}</li>
-        {% endfor %}
-    </ul>
-    <ol>
-        {% for instruction in recipe_instructions3 %}
-        <li>{{instruction}}</li>
-        {% endfor %}
-    </ol>
-
-
+    {% endfor %}
 </body>
 
 </html>
