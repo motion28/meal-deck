@@ -19,15 +19,18 @@ def recipe_call(search_term):
     RECIPE_API_KEY = os.getenv("SPOON_key")
 
     url = f"https://api.spoonacular.com/recipes/complexSearch?query={search_term}&apiKey={RECIPE_API_KEY}&addRecipeInformation=True&fillIngredients=True&number=3"
+
     data_recipes = requests.get(url).json()
     num_of_results = len(data_recipes["results"])
 
     recipe_titles = []
     recipe_images = []
     extended_ingredients = []
-    ingredients = [[]] * num_of_results
+    recipe_ingredients = [[] for i in range(num_of_results)]
+    # list comprehension to create list of lists
     analyzed_instructions = []
-    instructions = [[]] * num_of_results
+    recipe_instructions = [[] for i in range(num_of_results)]
+    # list comprehension to create list of lists
 
     for i in range(num_of_results):
         result = data_recipes["results"][i]
@@ -40,17 +43,19 @@ def recipe_call(search_term):
     for i in range(num_of_results):
         for ingredient in extended_ingredients[i]:
             original = ingredient["original"]
-            ingredients[i].append(original)
-
-    # loops to fill list with steps
-    for i in range(num_of_results):
+            recipe_ingredients[i].append(original)
+        # loop to fill recipe instructions
         for item in analyzed_instructions[i]:
             steps = item["steps"]
             for instruction in steps:
                 step = instruction["step"]
-                instructions[i].append(step)
-
-    return (recipe_titles, recipe_images, ingredients, instructions)
+                recipe_instructions[i].append(step)
+    return (
+        recipe_titles,
+        recipe_images,
+        recipe_ingredients,
+        recipe_instructions,
+    )  # return recipe info as a tuple
 
 
 # r = recipe_call("chicken")

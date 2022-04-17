@@ -178,11 +178,11 @@ def get_food():
     search_input = flask.request.args.get("food_input").lower()
     search_term = str(search_input)
     food_recipe = food_api.recipe_call(search_input)
-    recipe_titles = food_recipe[0]
-    recipe_images = food_recipe[1]
-    recipe_ingredients = food_recipe[2]
-    recipe_instructions = food_recipe[3]
-    recipe_count = len(recipe_titles)
+    recipe_titles = food_recipe[0]  # 0th index -> titles
+    recipe_images = food_recipe[1]  # 1st index -> images
+    recipe_ingredients = food_recipe[2]  # 2nd index -> ingredients
+    recipe_instructions = food_recipe[3]  # 3rd index -> instructions
+    recipe_count = len(recipe_titles)  # recipe_count for looping purposes
 
     return flask.render_template(
         "food.html",
