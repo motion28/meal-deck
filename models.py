@@ -28,9 +28,9 @@ class Recipe(db.Model):
 class Favorite(db.Model):
     __tablename__ = "Favorites"
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Float, ForeignKey("Users.google_id"))
+    google_id = db.Column(db.Float, ForeignKey("Users.google_id"))
     username = db.Column(db.String(100), ForeignKey("Users.username"))
-    recipe = db.Column(db.String(100), ForeignKey("Recipes.name"))
+    recipe_name = db.Column(db.String(100), ForeignKey("Recipes.name"))
     # user = relationship("User", backref=backref("favorites", order_by=id))
     # favorite = relationship("Recipe", backref=backref("favorites", order_by=id))
 

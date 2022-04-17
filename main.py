@@ -185,6 +185,13 @@ def get_food():
     recipe_instructions = food_recipe[3]  # 3rd index -> instructions
     recipe_count = len(recipe_titles)  # recipe_count for looping purposes
 
+    # Add recipe to database if not already present
+    for title in recipe_titles:
+        exists = Recipe.query.filter_by(name=title).first()
+        if not exists:
+            db.session.add(Recipe(name=title))
+            db.session.commit()
+
     return flask.render_template(
         "food.html",
         username=current_user.username,
@@ -198,6 +205,27 @@ def get_food():
     )
 
 
+@app.route("/add_favorite", methods=["POST"])
+@login_required
+def add_favorite():
+    exists = Favorite.query.filter_by(google_id=session["google_id"]).first()
+    if not exists:
+        new_favorite = Favorite(
+            google_id=session["google_id"],
+            username=current_user.username,
+            recipe_name=request.form["recipeName"],
+        )
+        db.session.add(new_favorite)
+        db.session.commit()
+        flask.flash("You added " + request.form["recipeName"] + " to your favorites!")
+        return flask.redirect("/meal_deck")
+    else:
+        flask.flash(
+            "You already have " + request.form["recipeName"] + " in your favorites"
+        )
+        return flask.redirect("/meal_deck")
+
+
 @app.route("/get_favorites")
 @login_required
 def get_favorites():
@@ -206,7 +234,7 @@ def get_favorites():
         [
             {
                 "username": Favorite.username,
-                "recipe": Favorite.recipe,
+                "recipe": Favorite.recipe_name,
             }
             for favorite in favorites
         ]

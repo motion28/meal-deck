@@ -28,6 +28,10 @@
         <li>{{instruction}}</li>
         {% endfor %}
     </ol>
+    <form method="POST" action="/add_favorite">
+        Recipe: <input type="text" name="recipeName" value="{{recipe_titles[i]}}" />
+        <input type="submit" value="Add to favorites!" />
+    </form>
     {% endfor %}
 </body>
 
