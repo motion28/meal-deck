@@ -16,7 +16,7 @@
     </div>
 
     {%for i in range(0, recipe_count)%}
-    <p>{{recipe_titles[i]}}</p>
+    <p><b>{{recipe_titles[i]}}</b></p>
     <img src={{recipe_images[i]}}>
     <ul>
         {% for ingredient in recipe_ingredients[i] %}
