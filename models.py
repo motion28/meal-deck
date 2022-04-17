@@ -20,9 +20,9 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(100), unique=True, nullable=False)
 
 
-class Recipe(db.Model):
-    __tablename__ = "Recipes"
-    name = db.Column(db.String(100), primary_key=True)
+# class Recipe(db.Model):
+# __tablename__ = "Recipes"
+# name = db.Column(db.String(100), primary_key=True)
 
 
 class Favorite(db.Model):
@@ -30,7 +30,7 @@ class Favorite(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     google_id = db.Column(db.Float, ForeignKey("Users.google_id"))
     username = db.Column(db.String(100), ForeignKey("Users.username"))
-    recipe_name = db.Column(db.String(100), ForeignKey("Recipes.name"))
+    recipe_name = db.Column(db.String(100))
     # user = relationship("User", backref=backref("favorites", order_by=id))
     # favorite = relationship("Recipe", backref=backref("favorites", order_by=id))
 

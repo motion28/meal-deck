@@ -24,7 +24,7 @@ from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
 from pip._vendor import cachecontrol
 
-from models import db, User, Recipe, Favorite
+from models import db, User, Favorite
 
 load_dotenv(find_dotenv())
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"  # set environment to HTTPS
@@ -186,11 +186,11 @@ def get_food():
     recipe_count = len(recipe_titles)  # recipe_count for looping purposes
 
     # Add recipe to database if not already present
-    for title in recipe_titles:
-        exists = Recipe.query.filter_by(name=title).first()
-        if not exists:
-            db.session.add(Recipe(name=title))
-            db.session.commit()
+    #  for title in recipe_titles:
+    # exists = Recipe.query.filter_by(name=title).first()
+    # if not exists:
+    # db.session.add(Recipe(name=title))
+    #  db.session.commit()
 
     return flask.render_template(
         "food.html",
@@ -221,7 +221,7 @@ def add_favorite():
         return flask.redirect("/meal_deck")
     else:
         flask.flash(
-            "You already have " + request.form["recipeName"] + " in your favorites"
+            "You already have " + request.form["recipeName"] + " in your favorites!"
         )
         return flask.redirect("/meal_deck")
 
