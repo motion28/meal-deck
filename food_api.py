@@ -39,16 +39,16 @@ def recipe_call(search_term):
         ingredients.append(original)
 
     # containers for steps to be added below
-    full_step_list = []
+    instructions = []
 
     # loops to fill list with steps
     for item in analyzed_instructions:
         steps = item["steps"]
         for instruction in steps:
             step = instruction["step"]
-            full_step_list.append(step)
+            instructions.append(step)
 
-    return recipe_titles, recipe_images, ingredients, full_step_list
+    return [recipe_titles, recipe_images, ingredients, instructions]
 
 
 # r = recipe_call("chicken")
