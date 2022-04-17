@@ -49,6 +49,7 @@ login_manager.login_view = "login"
 with app.app_context():
     db.create_all()
 
+
 @login_manager.unauthorized_handler
 def unauthorized():
     """
@@ -68,12 +69,14 @@ def load_user(user_name):
 secrets = {
     "web": {
         "client_id": GOOGLE_CLIENT_ID,
-        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth?prompt=select_account",  # make user select an account
         "token_uri": "https://oauth2.googleapis.com/token",
         "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
         "client_secret": GOOGLE_CLIENT_SECRET,
-        "redirect_uris": ["http://127.0.0.1:5000/callback"], 
-        "redirect_uris": ["https://pacific-springs-45744.herokuapp.com/auth/google/callback"],
+        "redirect_uris": [
+            "https://pacific-springs-45744.herokuapp.com/auth/google/callback",
+            "http://127.0.0.1:5000/callback",
+        ],
     }
 }
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
@@ -89,7 +92,10 @@ flow = Flow.from_client_secrets_file(
         "https://www.googleapis.com/auth/userinfo.email",
         "openid",
     ],
-    redirect_uri="https://pacific-springs-45744.herokuapp.com/callback",
+    # For local deployment, use this line of code:
+    redirect_uri="http://127.0.0.1:5000/callback",
+    # For heroku deployment, use this redirect_uri
+    # redirect_uri="https://pacific-springs-45744.herokuapp.com/auth/google/callback",
 )
 
 
@@ -124,9 +130,10 @@ def callback():
     )
 
     name = id_info.get("name")
-    exists = User.query.filter_by(username=name).first()
+    google_id = id_info.get("sub")
+    exists = User.query.filter_by(google_id=google_id).first()
     if not exists:
-        db.session.add(User(username=name))
+        db.session.add(User(google_id=google_id, username=name))
         db.session.commit()
     user = User.query.filter_by(username=name).first()
     login_user(user)
@@ -168,7 +175,7 @@ def get_food():
     """
     Function in charge of getting food input and display result of user's search
     """
-    search_input = flask.request.args.get('food_input').lower()
+    search_input = flask.request.args.get("food_input").lower()
     search_term = str(search_input)
     food_recipe = food_api.recipe_call(search_input)
 
@@ -195,12 +202,10 @@ def get_food():
         recipe_image=recipe_image,
         recipe_ingredients=recipe_ingredients,
         recipe_instructions=recipe_instructions,
-
         recipe_title2=recipe_title2,
         recipe_image2=recipe_image2,
         recipe_ingredients2=recipe_ingredients2,
         recipe_instructions2=recipe_instructions2,
-
         recipe_title3=recipe_title3,
         recipe_image3=recipe_image3,
         recipe_ingredients3=recipe_ingredients3,
@@ -208,6 +213,11 @@ def get_food():
         search_success=True,
     )
 
-port = int(os.environ.get("PORT", 5000))
-app.run(host='0.0.0.0', port=port, debug=True)
 
+# For local deployment, use this app.run() line:
+app.run()
+
+# For heroku deployment, uncomment the below two:
+
+# port = int(os.environ.get("PORT", 5000))
+# app.run(host="0.0.0.0", port=port, debug=True)
