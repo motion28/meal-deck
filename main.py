@@ -180,17 +180,19 @@ def get_food():
     food_recipe = food_api.recipe_call(search_input)
     recipe_titles = food_recipe[0]
     recipe_images = food_recipe[1]
-    ingredients = food_recipe[2]
-    instructions = food_recipe[3]
+    recipe_ingredients = food_recipe[2]
+    recipe_instructions = food_recipe[3]
+    recipe_count = len(recipe_titles)
 
     return flask.render_template(
         "food.html",
         username=current_user.username,
         search_term=search_term,
+        recipe_count=recipe_count,
         recipe_titles=recipe_titles,
         recipe_images=recipe_images,
-        ingredients=ingredients,
-        instructions=instructions,
+        recipe_ingredients=recipe_ingredients,
+        recipe_instructions=recipe_instructions,
         search_success=True,
     )
 

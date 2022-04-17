@@ -20,13 +20,16 @@ def recipe_call(search_term):
 
     url = f"https://api.spoonacular.com/recipes/complexSearch?query={search_term}&apiKey={RECIPE_API_KEY}&addRecipeInformation=True&fillIngredients=True&number=3"
     data_recipes = requests.get(url).json()
+    num_of_results = len(data_recipes["results"])
+
     recipe_titles = []
     recipe_images = []
     extended_ingredients = []
-    ingredients = []
+    ingredients = [[]] * num_of_results
     analyzed_instructions = []
+    instructions = [[]] * num_of_results
 
-    for i in range(len(data_recipes["results"])):
+    for i in range(num_of_results):
         result = data_recipes["results"][i]
         recipe_titles.append(result["title"])
         recipe_images.append(result["image"])
@@ -34,21 +37,20 @@ def recipe_call(search_term):
         analyzed_instructions.append(result["analyzedInstructions"])
 
     # pulls ingredients and puts them in a list
-    for ingredient in extended_ingredients:
-        original = ingredient["original"]
-        ingredients.append(original)
-
-    # containers for steps to be added below
-    instructions = []
+    for i in range(num_of_results):
+        for ingredient in extended_ingredients[i]:
+            original = ingredient["original"]
+            ingredients[i].append(original)
 
     # loops to fill list with steps
-    for item in analyzed_instructions:
-        steps = item["steps"]
-        for instruction in steps:
-            step = instruction["step"]
-            instructions.append(step)
+    for i in range(num_of_results):
+        for item in analyzed_instructions[i]:
+            steps = item["steps"]
+            for instruction in steps:
+                step = instruction["step"]
+                instructions[i].append(step)
 
-    return [recipe_titles, recipe_images, ingredients, instructions]
+    return (recipe_titles, recipe_images, ingredients, instructions)
 
 
 # r = recipe_call("chicken")
