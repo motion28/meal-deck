@@ -24,7 +24,7 @@ from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
 from pip._vendor import cachecontrol
 
-from models import db, User
+from models import db, User, Favorite
 
 load_dotenv(find_dotenv())
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"  # set environment to HTTPS
@@ -131,6 +131,7 @@ def callback():
 
     name = id_info.get("name")
     google_id = id_info.get("sub")
+    session["google_id"] = google_id
     exists = User.query.filter_by(google_id=google_id).first()
     if not exists:
         db.session.add(User(google_id=google_id, username=name))
@@ -194,6 +195,61 @@ def get_food():
         recipe_ingredients=recipe_ingredients,
         recipe_instructions=recipe_instructions,
         search_success=True,
+    )
+
+
+@app.route("/add_favorite", methods=["POST"])
+@login_required
+def add_favorite():
+    """
+    Function which adds a favorite recipe to the database if not already present
+    """
+    exists = Favorite.query.filter_by(
+        google_id=session["google_id"], recipe_name=request.form["recipeName"]
+    ).first()  # If not exists then add to db, if already exists, do not add.
+    if not exists:
+        new_favorite = Favorite(
+            google_id=session["google_id"],
+            username=current_user.username,
+            recipe_name=request.form["recipeName"],
+        )
+        db.session.add(new_favorite)
+        db.session.commit()
+        flask.flash("You added " + request.form["recipeName"] + " to your favorites!")
+        return flask.redirect("/get_favorites")
+
+    flask.flash(
+        "You already have " + request.form["recipeName"] + " in your favorites!"
+    )
+    return flask.redirect("/get_favorites")
+
+
+@app.route("/delete_favorite", methods=["POST"])
+@login_required
+def delete_favorite():
+    """
+    Function which deletes the corresponding favorite recipe from database
+    """
+    to_delete = Favorite.query.filter_by(
+        google_id=session["google_id"], recipe_name=request.form["recipe_name"]
+    ).first()
+    db.session.delete(to_delete)
+    db.session.commit()
+    flask.flash("You deleted " + request.form["recipe_name"] + " from your favorites!")
+    return flask.redirect("/get_favorites")
+
+
+@app.route("/get_favorites")
+@login_required
+def get_favorites():
+    """
+    Function which handles the page with the user's favorite recipes
+    """
+    favorites = Favorite.query.filter_by(google_id=session["google_id"]).all()
+    return flask.render_template(
+        "favorites.html",
+        username=current_user.username,
+        favorites=favorites,
     )
 
 
