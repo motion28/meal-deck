@@ -17,7 +17,7 @@ class User(db.Model, UserMixin):
     __tablename__ = "Users"
     id = db.Column(db.Integer, primary_key=True)
     google_id = db.Column(db.Float, unique=True, nullable=False)
-    username = db.Column(db.String(100), unique=True, nullable=False)
+    username = db.Column(db.String(100), unique=False, nullable=False)
 
 
 # Favorite recipes table
@@ -25,5 +25,4 @@ class Favorite(db.Model):
     __tablename__ = "Favorites"
     id = db.Column(db.Integer, primary_key=True)
     google_id = db.Column(db.Float, ForeignKey("Users.google_id"))
-    username = db.Column(db.String(100), ForeignKey("Users.username"))
-    recipe_name = db.Column(db.String(100))  # store name
+    recipe_name = db.Column(db.String(100))  # store recipe name
