@@ -228,6 +228,23 @@ def add_favorite():
     return flask.redirect("/get_favorites")
 
 
+@app.route("/delete_favorite", methods=["POST"])
+@login_required
+def delete_favorite():
+    # to_delete = Favorite(
+    # google_id=session["google_id"],
+    # username=current_user.username,
+    # recipe_name=request.form["recipe_name"],
+    # )
+    to_delete = Favorite.query.filter_by(
+        google_id=session["google_id"], recipe_name=request.form["recipe_name"]
+    ).first()
+    db.session.delete(to_delete)
+    db.session.commit()
+    flask.flash("You deleted " + request.form["recipe_name"] + " from your favorites!")
+    return flask.redirect("/get_favorites")
+
+
 @app.route("/get_favorites")
 @login_required
 def get_favorites():

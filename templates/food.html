@@ -17,7 +17,14 @@
     </div>
 
     {%for i in range(0, recipe_count)%}
-    <p><b>{{recipe_titles[i]}}</b></p>
+    <p>
+        <b>
+            <form method="POST" action="/add_favorite">
+                <input type="hidden" name="recipeName" value="{{recipe_titles[i]}}" readonly />
+                {{recipe_titles[i]}} <input type="submit" value="Add to favorites!" />
+            </form>
+        </b>
+    </p>
     <img src={{recipe_images[i]}}>
     <ul>
         {% for ingredient in recipe_ingredients[i] %}
@@ -29,10 +36,7 @@
         <li>{{instruction}}</li>
         {% endfor %}
     </ol>
-    <form method="POST" action="/add_favorite">
-        Recipe: <input type="text" name="recipeName" value="{{recipe_titles[i]}}" readonly />
-        <input type="submit" value="Add to favorites!" />
-    </form>
+
     {% endfor %}
 </body>
 

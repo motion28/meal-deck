@@ -13,15 +13,21 @@
     <div style="float:right;">
         Signed in as {{username}} <a href='/logout'><button>Logout</button></a>
     </div>
+    <h4><a href='/meal_deck'>Search for recipes!</a></h4>
     <h1>Your favorite recipes</h1>
 </head>
 
 <body>
     {% for favorite in favorites %}
+    <form action="/delete_favorite" method="POST">
+        {{favorite.recipe_name}}
+        <button type="submit" id="search_button" name="recipe_name" value="{{favorite.recipe_name}}"> Delete!</button>
+    </form>
+
     <form action="/get-food" method="GET">
         <p>
-            <button type="submit" id="search_button" name="food_input"
-                value="{{favorite.recipe_name}}">->{{favorite.recipe_name}}</button>
+            <button type="submit" id="search_button" name="food_input" value="{{favorite.recipe_name}}"> -> View
+                Details!</button>
         </p>
     </form>
     {% endfor %}
