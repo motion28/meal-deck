@@ -12,7 +12,7 @@ from flask_login import UserMixin
 
 db = SQLAlchemy()
 
-
+# User table
 class User(db.Model, UserMixin):
     __tablename__ = "Users"
     id = db.Column(db.Integer, primary_key=True)
@@ -20,20 +20,10 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(100), unique=True, nullable=False)
 
 
-# class Recipe(db.Model):
-# __tablename__ = "Recipes"
-# name = db.Column(db.String(100), primary_key=True)
-
-
+# Favorite recipes table
 class Favorite(db.Model):
     __tablename__ = "Favorites"
     id = db.Column(db.Integer, primary_key=True)
     google_id = db.Column(db.Float, ForeignKey("Users.google_id"))
     username = db.Column(db.String(100), ForeignKey("Users.username"))
-    recipe_name = db.Column(db.String(100))
-    # user = relationship("User", backref=backref("favorites", order_by=id))
-    # favorite = relationship("Recipe", backref=backref("favorites", order_by=id))
-
-
-# class Favorites(db.Model):
-# id = db.Column(db.Integer, primary_key=True)
+    recipe_name = db.Column(db.String(100))  # store name

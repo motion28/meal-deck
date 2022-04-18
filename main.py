@@ -185,13 +185,6 @@ def get_food():
     recipe_instructions = food_recipe[3]  # 3rd index -> instructions
     recipe_count = len(recipe_titles)  # recipe_count for looping purposes
 
-    # Add recipe to database if not already present
-    #  for title in recipe_titles:
-    # exists = Recipe.query.filter_by(name=title).first()
-    # if not exists:
-    # db.session.add(Recipe(name=title))
-    #  db.session.commit()
-
     return flask.render_template(
         "food.html",
         username=current_user.username,
@@ -208,9 +201,12 @@ def get_food():
 @app.route("/add_favorite", methods=["POST"])
 @login_required
 def add_favorite():
+    """
+    Function which adds a favorite recipe to the database if not already present
+    """
     exists = Favorite.query.filter_by(
         google_id=session["google_id"], recipe_name=request.form["recipeName"]
-    ).first()
+    ).first()  # If not exists then add to db, if already exists, do not add.
     if not exists:
         new_favorite = Favorite(
             google_id=session["google_id"],
@@ -231,11 +227,9 @@ def add_favorite():
 @app.route("/delete_favorite", methods=["POST"])
 @login_required
 def delete_favorite():
-    # to_delete = Favorite(
-    # google_id=session["google_id"],
-    # username=current_user.username,
-    # recipe_name=request.form["recipe_name"],
-    # )
+    """
+    Function which deletes the corresponding favorite recipe from database
+    """
     to_delete = Favorite.query.filter_by(
         google_id=session["google_id"], recipe_name=request.form["recipe_name"]
     ).first()
@@ -248,6 +242,9 @@ def delete_favorite():
 @app.route("/get_favorites")
 @login_required
 def get_favorites():
+    """
+    Function which handles the page with the user's favorite recipes
+    """
     favorites = Favorite.query.filter_by(google_id=session["google_id"]).all()
     return flask.render_template(
         "favorites.html",

@@ -6,6 +6,12 @@
     <div style="float:right;">Signed in as {{username}} <a href='/logout'><button>Logout</button></a>
         <p><a href='/get_favorites'><button>View your favorite recipes!</button></a></p>
     </div>
+    <form action="/get-food" method="GET">
+        <div class="center" id="search">
+            <input type="search" id="food_input" name="food_input" placeholder="Search" required>
+            <button type="submit" id="search_button" name="food_button" for="food_input">Search</button>
+        </div>
+    </form>
     <title>Recipe details</title>
 </head>
 

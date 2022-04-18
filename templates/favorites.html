@@ -13,7 +13,12 @@
     <div style="float:right;">
         Signed in as {{username}} <a href='/logout'><button>Logout</button></a>
     </div>
-    <h4><a href='/meal_deck'>Search for recipes!</a></h4>
+    <form action="/get-food" method="GET">
+        <div class="center" id="search">
+            <input type="search" id="food_input" name="food_input" placeholder="Search" required>
+            <button type="submit" id="search_button" name="food_button" for="food_input">Search</button>
+        </div>
+    </form>
     <h1>Your favorite recipes</h1>
 </head>
 
