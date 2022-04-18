@@ -210,7 +210,6 @@ def add_favorite():
     if not exists:
         new_favorite = Favorite(
             google_id=session["google_id"],
-            username=current_user.username,
             recipe_name=request.form["recipeName"],
         )
         db.session.add(new_favorite)
