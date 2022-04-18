@@ -208,7 +208,9 @@ def get_food():
 @app.route("/add_favorite", methods=["POST"])
 @login_required
 def add_favorite():
-    exists = Favorite.query.filter_by(google_id=session["google_id"]).first()
+    exists = Favorite.query.filter_by(
+        google_id=session["google_id"], recipe_name=request.form["recipeName"]
+    ).first()
     if not exists:
         new_favorite = Favorite(
             google_id=session["google_id"],
@@ -218,26 +220,22 @@ def add_favorite():
         db.session.add(new_favorite)
         db.session.commit()
         flask.flash("You added " + request.form["recipeName"] + " to your favorites!")
-        return flask.redirect("/meal_deck")
-    else:
-        flask.flash(
-            "You already have " + request.form["recipeName"] + " in your favorites!"
-        )
-        return flask.redirect("/meal_deck")
+        return flask.redirect("/get_favorites")
+
+    flask.flash(
+        "You already have " + request.form["recipeName"] + " in your favorites!"
+    )
+    return flask.redirect("/get_favorites")
 
 
 @app.route("/get_favorites")
 @login_required
 def get_favorites():
     favorites = Favorite.query.filter_by(google_id=session["google_id"]).all()
-    return flask.jsonify(
-        [
-            {
-                "username": Favorite.username,
-                "recipe": Favorite.recipe_name,
-            }
-            for favorite in favorites
-        ]
+    return flask.render_template(
+        "favorites.html",
+        username=current_user.username,
+        favorites=favorites,
     )
 
 

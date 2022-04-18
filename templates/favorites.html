@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {%for message in messages %}
+    <b>{{message}}</b>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <p>Signed in as: {{username}} <a href='/logout'><button>Logout</button></a></h1>
+    </p>
+    <title>Your favorite recipes: </title>
+</head>
+
+<body>
+    {% for favorite in favorites %}
+    <p>{{favorite.recipe_name}}</p>
+    {% endfor %}
+</body>
