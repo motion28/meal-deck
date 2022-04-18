@@ -18,6 +18,11 @@
 
 <body>
     {% for favorite in favorites %}
-    <p>{{favorite.recipe_name}}</p>
+    <form action="/get-food" method="GET">
+        <p>
+            <button type="submit" id="search_button" name="food_input"
+                value="{{favorite.recipe_name}}">->{{favorite.recipe_name}}</button>
+        </p>
+    </form>
     {% endfor %}
 </body>
