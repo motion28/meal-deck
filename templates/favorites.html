@@ -10,9 +10,10 @@
     {% endfor %}
     {% endif %}
     {% endwith %}
-    <p>Signed in as: {{username}} <a href='/logout'><button>Logout</button></a></h1>
-    </p>
-    <title>Your favorite recipes: </title>
+    <div style="float:right;">
+        Signed in as {{username}} <a href='/logout'><button>Logout</button></a>
+    </div>
+    <h1>Your favorite recipes</h1>
 </head>
 
 <body>
