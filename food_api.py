@@ -6,30 +6,46 @@
 
 import os
 import random
+from urllib import response
 import requests
 from dotenv import find_dotenv, load_dotenv
 
 load_dotenv(find_dotenv())
 
-randomFood = ["chicken", "beef", "pork", "fish", "steak", "fruit", "bacon", "sushi","salmon", "lamb", "pasta", "pizza", ]
+
+randomFood = [
+    "chicken",
+    "beef",
+    "pork",
+    "fish",
+    "steak",
+    "fruit",
+    "bacon",
+    "sushi",
+    "salmon",
+    "lamb",
+    "pasta",
+    "pizza",
+]
+
 
 def get_random_foodItem():
     """
-    This functions returns a random food item from the spoonacular API, through a random ID generated from random.randint
-    """
+    Returns the title and image of a random food item fetched from the API"""
+
     foodItem = random.choice(randomFood)
+
     RECIPE_API_KEY = os.getenv("SPOON_key")
-    url=f"https://api.spoonacular.com/recipes/complexSearch?query={foodItem}&apiKey={RECIPE_API_KEY}&number=1"
+
+    url = f"https://api.spoonacular.com/recipes/complexSearch?query={foodItem}&apiKey={RECIPE_API_KEY}&number=1"
     response = requests.get(url).json()
-    foodImage = response["results"][0]["image"]
     foodTitle = response["results"][0]["title"]
+    foodImage = response["results"][0]["image"]
 
     return (
         foodTitle,
         foodImage,
     )
-
-
 
 
 def recipe_call(search_term):
@@ -39,7 +55,7 @@ def recipe_call(search_term):
     """
     RECIPE_API_KEY = os.getenv("SPOON_key")
 
-    url = f"https://api.spoonacular.com/recipes/complexSearch?query={search_term}&apiKey={RECIPE_API_KEY}&addRecipeInformation=True&fillIngredients=True&number=1"
+    url = f"https://api.spoonacular.com/recipes/complexSearch?query={search_term}&apiKey={RECIPE_API_KEY}&addRecipeInformation=True&fillIngredients=True&number=3"
 
     data_recipes = requests.get(url).json()
     num_of_results = len(data_recipes["results"])
