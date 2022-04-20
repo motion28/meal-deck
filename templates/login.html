@@ -1,10 +1,4 @@
 <html>
-
-<head>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-
-
 {% with messages = get_flashed_messages() %}
 {% if messages %}
 {%for message in messages %}
@@ -13,16 +7,184 @@
 {% endif %}
 {% endwith %}
 
-<body>
-    <div class="row">
-        <h1>Welcome to MealDeck!!</h1>
-    </div>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
 
-    <div class="center">
-        <a href='/login'><button class="btn">Login using Google!</button></a>
-    </div>
+    <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">MealDeck</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a href="/login" class="card-link"><button type="button" class="btn btn-primary">Login</button></a>>
+                </li>
+        </div>
+    </nav>
+</head>
 
 
+<body id="landing">
+    <div class="bg-image" style="
+      background-image: url('https://as2.ftcdn.net/v2/jpg/02/44/71/07/1000_F_244710705_kJbRGNfdwXq4zfikaaXE77iQCAHsQjt0.jpg');
+      background-size: cover;
+      height: 100vh;
+    ">
+        <br>
+        <div class="card text-center mx-auto" style="width: 40rem;">
+            <div class="card-body">
+                <h3 class="card-title">Welcome to MealDeck!</h3>
+                <h6 class="card-subtitle mb-2 text-muted">MealDeck allows you to easily access recipes for different
+                    meals.
+                </h6>
+
+                <a href="/login" class="card-link"><button type="button" class="btn btn-primary">Get
+                        started using your Google Account!</button></a>
+                <p class="card-text">New user? We'll automatically create an account for you!</p>
+            </div>
+        </div>
+        <br>
+        <div class="container-lg my-3">
+            <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+                <!-- Wrapper for carousel items -->
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="card text-center mx-auto" style="width: 50rem;">
+                            <div class="card-body">
+                                <h3 class="card-title">Choose your favorites</h3>
+                                <p class="card-text">Easily search for different recipes and save the ones
+                                    that
+                                    you
+                                    like
+                                    the
+                                    most.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="card text-center mx-auto" style="width: 50rem;">
+                            <div class="card-body">
+                                <h3 class="card-title">Create a meal plan</h3>
+                                <p class="card-text">Plan out your meals in advance using our MealPlan feature.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="card text-center mx-auto" style="width: 50rem;">
+                            <div class="card-body">
+                                <h3 class="card-title">Find food near you</h3>
+                                <p class="card-text">Find selected food items in a store or business near you. </p>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#myCarousel"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                    <a class="carousel-control-prev" href="#myCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </a>
+                    <a class="carousel-control-next" href="#myCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
 </body>
+
+<br>
+<br>
+<br>
+
+<!-- Footer -->
+<footer class="text-center text-lg-start bg-dark text-light">
+    <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+        <div class="me-5 d-none d-lg-block">
+            <span>
+                <h5>About Us</h5>
+            </span>
+        </div>
+
+    </section>
+
+    <section class="">
+        <div class="container text-center text-md-start mt-5">
+            <!-- Grid row -->
+            <div class="row mt-3">
+                <!-- Grid column -->
+                <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                    <!-- Content -->
+                    <h6 class="text-uppercase fw-bold mb-4">
+                        <i class="fas fa-gem me-3"></i>MealDeck
+                    </h6>
+                    <p>
+                        Search food items and their recipes easily.
+                    </p>
+                </div>
+                <!-- Grid column -->
+
+                <!-- Grid column -->
+                <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+                    <!-- Links -->
+                    <h6 class="text-uppercase fw-bold mb-4">
+                        This app uses
+                    </h6>
+                    <p>
+                        <a href="https://spoonacular.com/food-api" class="text-reset">Spoonacular API</a>
+                    </p>
+                    <p>
+                        <a href="https://flask.palletsprojects.com/en/2.1.x/" class="text-reset">Flask</a>
+                    </p>
+                    <p>
+                        <a href="https://getbootstrap.com/" class="text-reset">Bootstrap</a>
+                    </p>
+                    <p>
+                        <a href="https://developers.google.com/identity/sign-in/web/sign-in" class="text-reset">Google
+                            Login API</a>
+                    </p>
+                </div>
+                <!-- Grid column -->
+
+                <!-- Grid column -->
+                <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+                    <!-- Links -->
+                    <h6 class="text-uppercase fw-bold mb-4">
+                        Developers
+                    </h6>
+                    <p>
+                        <a href="#!" class="text-reset">Moumin Ali</a>
+                    </p>
+                    <p>
+                        <a href="#!" class="text-reset">Augustine Li</a>
+                    </p>
+                    <p>
+                        <a href="#!" class="text-reset">Nestor Kaputo</a>
+                    </p>
+                    <p>
+                        <a href="#!" class="text-reset">Kirtan Kabariya</a>
+                    </p>
+                </div>
+                <!-- Grid column -->
+
+            </div>
+        </div>
+    </section>
+    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+        © 2022 Copyright MealDeck
+    </div>
+</footer>
 
 </html>
