@@ -33,11 +33,13 @@
     </p>
     <img src={{recipe_images[i]}}>
     <ul>
+        <b>Ingredients:</b>
         {% for ingredient in recipe_ingredients[i] %}
         <li>{{ingredient}}</li>
         {% endfor %}
     </ul>
-    <ol>
+    <ol>    
+        <b>Instructions:</b>
         {% for instruction in recipe_instructions[i] %}
         <li>{{instruction}}</li>
         {% endfor %}

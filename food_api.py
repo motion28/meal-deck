@@ -5,10 +5,47 @@
 # pylint: disable=line-too-long
 
 import os
+import random
+from urllib import response
 import requests
 from dotenv import find_dotenv, load_dotenv
 
 load_dotenv(find_dotenv())
+
+
+randomFood = [
+    "chicken",
+    "beef",
+    "pork",
+    "fish",
+    "steak",
+    "fruit",
+    "bacon",
+    "sushi",
+    "salmon",
+    "lamb",
+    "pasta",
+    "pizza",
+]
+
+
+def get_random_foodItem():
+    """
+    Returns the title and image of a random food item fetched from the API"""
+
+    foodItem = random.choice(randomFood)
+
+    RECIPE_API_KEY = os.getenv("SPOON_key")
+
+    url = f"https://api.spoonacular.com/recipes/complexSearch?query={foodItem}&apiKey={RECIPE_API_KEY}&number=1"
+    response = requests.get(url).json()
+    foodTitle = response["results"][0]["title"]
+    foodImage = response["results"][0]["image"]
+
+    return (
+        foodTitle,
+        foodImage,
+    )
 
 
 def recipe_call(search_term):
