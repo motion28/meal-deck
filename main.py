@@ -164,8 +164,14 @@ def meal_deck():
     """
     Main portion of the app after user has logged in
     """
+    foodTitle, foodImage = food_api.get_random_foodItem()
     if current_user.is_authenticated:  # if authenticated, go to main page
-        return flask.render_template("index.html", username=current_user.username)
+        return flask.render_template(
+            "index.html",
+            username=current_user.username,
+            foodTitle=foodTitle,
+            foodImage=foodImage,
+        )
     flask.flash("You must be logged in to access this page!")
     return flask.redirect("/")
 
