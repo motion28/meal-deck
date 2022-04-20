@@ -4,27 +4,46 @@
 <head>
     <link rel="stylesheet" href="/static/style.css" />
 </head>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{%for message in messages %}
+<b>{{message}}</b>
+{% endfor %}
+{% endif %}
+{% endwith %}
 
 <body style="text-align: center;">
     <div>
 
         <div class="row" id="header">
             <div class="col">
-                <h1>What to Eat?</h1>
+                <h1>Welcome to MealDeck, {{username}}! <a href='/logout'><button>Logout</button></a></h1>
             </div>
-        </div> 
+        </div>
+
+        <div class="random">
+            <h2>Suggested food item: {{foodTitle}}</h2>
+            <img src="{{foodImage}}" alt="food image" style="width:300px;height:300px;">
+        </div>
 
         <div class="row" id="row2">
-            <h2>What are you in the mood for?</h2>
-        </div> 
+            <h2>What would you like to eat?</h2>
+        </div>
 
         <form action="/get-food" method="GET">
             <div class="center" id="search">
                 <input type="search" id="food_input" name="food_input" placeholder="Search" required><br>
-                <button type="submit" id="search_button" name="food_button" for="food_input" >Search</button>
+                <button type="submit" id="search_button" name="food_button" for="food_input">Search</button>
             </div>
         </form>
-    </div> 
+
+        <div class="row" id="row3">
+            <br><br>
+            <a href='/get_favorites'><button>View your favorite recipes!</button>
+        </div>
+
+    </div>
 
 </body>
+
 </html>

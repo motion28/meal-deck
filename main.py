@@ -1,10 +1,16 @@
+# pylint: disable=invalid-name
+# pylint: disable=missing-module-docstring
+# pylint: disable=missing-class-docstring
+# pylint: disable=no-member
+# pylint: disable=protected-access
+
 import os
 import pathlib
 import requests
 import flask
+import google.auth.transport.requests
 import food_api
-import flask_sqlalchemy
-import time
+import json
 from flask import session, abort, request
 from flask_login import (
     LoginManager,
@@ -17,28 +23,66 @@ from dotenv import find_dotenv, load_dotenv
 from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
 from pip._vendor import cachecontrol
-import google.auth.transport.requests
-from models import app, db, User
+
+from models import db, User, Favorite
 
 load_dotenv(find_dotenv())
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"  # set environment to HTTPS
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
+
+app = flask.Flask(__name__)
 
 app.secret_key = bytes(os.getenv("session_key"), "utf8")
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+if app.config["SQLALCHEMY_DATABASE_URI"].startswith("postgres://"):
+    app.config["SQLALCHEMY_DATABASE_URI"] = app.config[
+        "SQLALCHEMY_DATABASE_URI"
+    ].replace("postgres://", "postgresql://")
 
+db.init_app(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
+login_manager.login_view = "login"
+
+with app.app_context():
+    db.create_all()
+
 
 @login_manager.unauthorized_handler
 def unauthorized():
+    """
+    This function checks if user logged in before accessing content
+    """
     return "You must be logged in to access this content.", 403
 
 
 @login_manager.user_loader
 def load_user(user_name):
+    """
+    This function gets username and send it as query
+    """
     return User.query.get(user_name)
 
 
+secrets = {
+    "web": {
+        "client_id": GOOGLE_CLIENT_ID,
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth?prompt=select_account",  # make user select an account
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_secret": GOOGLE_CLIENT_SECRET,
+        "redirect_uris": [
+            "https://pacific-springs-45744.herokuapp.com/auth/google/callback",
+            "http://127.0.0.1:5000/callback",
+        ],
+    }
+}
+__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+f = open(os.path.join(__location__, "client_secrets.json"), "w")
+f.write(json.dumps(secrets))
+f.close()
 client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "client_secrets.json")
 
 flow = Flow.from_client_secrets_file(
@@ -48,12 +92,18 @@ flow = Flow.from_client_secrets_file(
         "https://www.googleapis.com/auth/userinfo.email",
         "openid",
     ],
+    # For local deployment, use this line of code:
     redirect_uri="http://127.0.0.1:5000/callback",
+    # For heroku deployment, use this redirect_uri
+    # redirect_uri="https://pacific-springs-45744.herokuapp.com/auth/google/callback",
 )
 
 
 @app.route("/login")
 def login():
+    """
+    This function routes to login page
+    """
     authorization_url, state = flow.authorization_url()
     session["state"] = state
     return flask.redirect(authorization_url)
@@ -61,6 +111,9 @@ def login():
 
 @app.route("/callback")
 def callback():
+    """
+    This function handles logins via google account
+    """
     flow.fetch_token(authorization_response=request.url)
     if not session["state"] == request.args["state"]:
         abort(500)
@@ -77,9 +130,11 @@ def callback():
     )
 
     name = id_info.get("name")
-    exists = User.query.filter_by(username=name).first()
+    google_id = id_info.get("sub")
+    session["google_id"] = google_id
+    exists = User.query.filter_by(google_id=google_id).first()
     if not exists:
-        db.session.add(User(username=name))
+        db.session.add(User(google_id=google_id, username=name))
         db.session.commit()
     user = User.query.filter_by(username=name).first()
     login_user(user)
@@ -89,62 +144,122 @@ def callback():
 @app.route("/logout")
 @login_required
 def logout():
+    """
+    This function redirects to root page
+    """
     logout_user()
     return flask.redirect("/")
 
 
 @app.route("/")
 def index():
+    """
+    This function routes to login page
+    """
     return flask.render_template("login.html")
 
 
-# Main portion of the app after user has logged in
 @app.route("/meal_deck")
 def meal_deck():
+    """
+    Main portion of the app after user has logged in
+    """
+    # randomFood = food_api.get_random_foodItem()
+    foodTitle, foodImage = food_api.get_random_foodItem()
     if current_user.is_authenticated:  # if authenticated, go to main page
-        return flask.render_template("index.html", username=current_user.username)
+        return flask.render_template(
+            "index.html", username=current_user.username, foodTitle=foodTitle, foodImage=foodImage,
+        )
     flask.flash("You must be logged in to access this page!")
     return flask.redirect("/")
 
 
-@app.route('/get-food')
+@app.route("/get-food")
+@login_required
 def get_food():
-    search_input = flask.request.args.get('food_input').lower()
+    """
+    Function in charge of getting food input and display result of user's search
+    """
+    search_input = flask.request.args.get("food_input").lower()
     search_term = str(search_input)
     food_recipe = food_api.recipe_call(search_input)
+    recipe_titles = food_recipe[0]  # 0th index -> titles
+    recipe_images = food_recipe[1]  # 1st index -> images
+    recipe_ingredients = food_recipe[2]  # 2nd index -> ingredients
+    recipe_instructions = food_recipe[3]  # 3rd index -> instructions
+    recipe_count = len(recipe_titles)  # recipe_count for looping purposes
 
-    recipe_title = food_recipe[0][0]
-    recipe_image = food_recipe[0][1]
-    recipe_ingredients = food_recipe[0][2]
-    recipe_instructions = food_recipe[0][3]
-
-    recipe_title2 = food_recipe[1][0]
-    recipe_image2 = food_recipe[1][1]
-    recipe_ingredients2 = food_recipe[1][2]
-    recipe_instructions2 = food_recipe[1][3]
-
-    recipe_title3 = food_recipe[2][0]
-    recipe_image3 = food_recipe[2][1]
-    recipe_ingredients3 = food_recipe[2][2]
-    recipe_instructions3 = food_recipe[2][3]
-    
     return flask.render_template(
-        'food.html',
-        search_term=search_term, 
-        recipe_title=recipe_title,
-        recipe_image=recipe_image,
-        recipe_ingredients=recipe_ingredients, 
+        "food.html",
+        username=current_user.username,
+        search_term=search_term,
+        recipe_count=recipe_count,
+        recipe_titles=recipe_titles,
+        recipe_images=recipe_images,
+        recipe_ingredients=recipe_ingredients,
         recipe_instructions=recipe_instructions,
-        recipe_title2=recipe_title2,
-        recipe_image2=recipe_image2,
-        recipe_ingredients2=recipe_ingredients2, 
-        recipe_instructions2=recipe_instructions2,
-        recipe_title3=recipe_title3,
-        recipe_image3=recipe_image3,
-        recipe_ingredients3=recipe_ingredients3, 
-        recipe_instructions3=recipe_instructions3,
-        search_success=True
+        search_success=True,
     )
-app.run(debug=True)
 
-#app.run(host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", 8080)), debug=True)
+
+@app.route("/add_favorite", methods=["POST"])
+@login_required
+def add_favorite():
+    """
+    Function which adds a favorite recipe to the database if not already present
+    """
+    exists = Favorite.query.filter_by(
+        google_id=session["google_id"], recipe_name=request.form["recipeName"]
+    ).first()  # If not exists then add to db, if already exists, do not add.
+    if not exists:
+        new_favorite = Favorite(
+            google_id=session["google_id"],
+            recipe_name=request.form["recipeName"],
+        )
+        db.session.add(new_favorite)
+        db.session.commit()
+        flask.flash("You added " + request.form["recipeName"] + " to your favorites!")
+        return flask.redirect("/get_favorites")
+
+    flask.flash(
+        "You already have " + request.form["recipeName"] + " in your favorites!"
+    )
+    return flask.redirect("/get_favorites")
+
+
+@app.route("/delete_favorite", methods=["POST"])
+@login_required
+def delete_favorite():
+    """
+    Function which deletes the corresponding favorite recipe from database
+    """
+    to_delete = Favorite.query.filter_by(
+        google_id=session["google_id"], recipe_name=request.form["recipe_name"]
+    ).first()
+    db.session.delete(to_delete)
+    db.session.commit()
+    flask.flash("You deleted " + request.form["recipe_name"] + " from your favorites!")
+    return flask.redirect("/get_favorites")
+
+
+@app.route("/get_favorites")
+@login_required
+def get_favorites():
+    """
+    Function which handles the page with the user's favorite recipes
+    """
+    favorites = Favorite.query.filter_by(google_id=session["google_id"]).all()
+    return flask.render_template(
+        "favorites.html",
+        username=current_user.username,
+        favorites=favorites,
+    )
+
+
+# For local deployment, use this app.run() line:
+app.run()
+
+# For heroku deployment, uncomment the below two:
+
+# port = int(os.environ.get("PORT", 5000))
+# app.run(host="0.0.0.0", port=port, debug=True)

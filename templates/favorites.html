@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {%for message in messages %}
+    <b>{{message}}</b>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <div style="float:right;">
+        Signed in as {{username}} <a href='/logout'><button>Logout</button></a>
+    </div>
+    <form action="/get-food" method="GET">
+        <div class="center" id="search">
+            <input type="search" id="food_input" name="food_input" placeholder="Search" required>
+            <button type="submit" id="search_button" name="food_button" for="food_input">Search</button>
+        </div>
+    </form>
+    <h1>Your favorite recipes</h1>
+</head>
+
+<body>
+    {% for favorite in favorites %}
+    <form action="/delete_favorite" method="POST">
+        {{favorite.recipe_name}}
+        <button type="submit" id="search_button" name="recipe_name" value="{{favorite.recipe_name}}"> Delete!</button>
+    </form>
+
+    <form action="/get-food" method="GET">
+        <p>
+            <button type="submit" id="search_button" name="food_input" value="{{favorite.recipe_name}}"> -> View
+                Details!</button>
+        </p>
+    </form>
+    {% endfor %}
+</body>
