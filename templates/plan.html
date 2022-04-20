@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {%for message in messages %}
+    <b>{{message}}</b>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <div style="float:right;">
+        Signed in as {{username}} <a href='/logout'><button>Logout</button></a>
+    </div>
+    <h1>Welcome to your weekly meal plan</h1>
+</head>
+
+<body>
+    <h3>Sunday:</h3>
+    {% for meal in sunday %}
+    <form action="/delete_plan" method="POST">
+        <p>{{meal.recipe_name}}</p>
+        <input type="hidden" name="day" value="sunday" readonly />
+        <button type="submit" id="search_button" name="recipe_name" value="{{meal.recipe_name}}"> Delete!</button>
+    </form>
+
+    <form action="/get-food" method="GET">
+        <p>
+            <button type="submit" id="search_button" name="food_input" value="{{meal.recipe_name}}"> -> View
+                Details!</button>
+        </p>
+    </form>
+    {% endfor %}
+    <br>
+    <h3>Monday:</h3>
+    {% for meal in monday %}
+    <form action="/delete_plan" method="POST">
+        <p>{{meal.recipe_name}}</p>
+        <input type="hidden" name="day" value="monday" readonly />
+        <button type="submit" id="search_button" name="recipe_name" value="{{meal.recipe_name}}"> Delete!</button>
+    </form>
+
+    <form action="/get-food" method="GET">
+        <p>
+            <button type="submit" id="search_button" name="food_input" value="{{meal.recipe_name}}"> -> View
+                Details!</button>
+        </p>
+    </form>
+    {% endfor %}
+    <br>
+    <h3>Tuesday:</h3>
+    {% for meal in tuesday %}
+    <form action="/delete_plan" method="POST">
+        <p>{{meal.recipe_name}}</p>
+        <input type="hidden" name="day" value="tuesday" readonly />
+        <button type="submit" id="search_button" name="recipe_name" value="{{meal.recipe_name}}"> Delete!</button>
+    </form>
+
+    <form action="/get-food" method="GET">
+        <p>
+            <button type="submit" id="search_button" name="food_input" value="{{meal.recipe_name}}"> -> View
+                Details!</button>
+        </p>
+    </form>
+    {% endfor %}
+    <br>
+    <h3>Wednesday:</h3>
+    {% for meal in wednesday %}
+    <form action="/delete_plan" method="POST">
+        <p>{{meal.recipe_name}}</p>
+        <input type="hidden" name="day" value="wednesday" readonly />
+        <button type="submit" id="search_button" name="recipe_name" value="{{meal.recipe_name}}"> Delete!</button>
+    </form>
+
+    <form action="/get-food" method="GET">
+        <p>
+            <button type="submit" id="search_button" name="food_input" value="{{meal.recipe_name}}"> -> View
+                Details!</button>
+        </p>
+    </form>
+    {% endfor %}
+    <br>
+    <h3>Thursday:</h3>
+    {% for meal in thursday %}
+    <form action="/delete_plan" method="POST">
+        <p>{{meal.recipe_name}}</p>
+        <input type="hidden" name="day" value="thursday" readonly />
+        <button type="submit" id="search_button" name="recipe_name" value="{{meal.recipe_name}}"> Delete!</button>
+    </form>
+
+    <form action="/get-food" method="GET">
+        <p>
+            <button type="submit" id="search_button" name="food_input" value="{{meal.recipe_name}}"> -> View
+                Details!</button>
+        </p>
+    </form>
+    {% endfor %}
+    <br>
+    <h3>Friday:</h3>
+    {% for meal in friday %}
+    <form action="/delete_plan" method="POST">
+        <p>{{meal.recipe_name}}</p>
+        <input type="hidden" name="day" value="friday" readonly />
+        <button type="submit" id="search_button" name="recipe_name" value="{{meal.recipe_name}}"> Delete!</button>
+    </form>
+
+    <form action="/get-food" method="GET">
+        <p>
+            <button type="submit" id="search_button" name="food_input" value="{{meal.recipe_name}}"> -> View
+                Details!</button>
+        </p>
+    </form>
+    {% endfor %}
+    <br>
+    <h3>Saturday:</h3>
+    {% for meal in saturday %}
+    <form action="/delete_plan" method="POST">
+        <p>{{meal.recipe_name}}</p>
+        <input type="hidden" name="day" value="saturday" readonly />
+        <button type="submit" id="search_button" name="recipe_name" value="{{meal.recipe_name}}"> Delete!</button>
+    </form>
+
+    <form action="/get-food" method="GET">
+        <p>
+            <button type="submit" id="search_button" name="food_input" value="{{meal.recipe_name}}"> -> View
+                Details!</button>
+        </p>
+    </form>
+    {% endfor %}
+    <br>
+</body>
+</html>

@@ -29,6 +29,20 @@
                 <input type="hidden" name="recipeName" value="{{recipe_titles[i]}}" readonly />
                 {{recipe_titles[i]}} <input type="submit" value="Add to favorites!" />
             </form>
+            <form method="POST" action="/add_plan">
+                <input type="hidden" name="recipeName" value="{{recipe_titles[i]}}" readonly />
+                <select name="day" required>
+                    <option value="" disabled selected>Choose here to add to meal plan</option>
+                    <option value="sunday"> Add to Sunday meal plan </option>
+                    <option value="monday"> Add to Monday meal plan </option>
+                    <option value="tuesday"> Add to Tuesday meal plan </option>
+                    <option value="wednesday"> Add to Wednesday meal plan </option>
+                    <option value="thursday"> Add to Thursday meal plan </option>
+                    <option value="friday"> Add to Friday meal plan </option>
+                    <option value="saturday"> Add to Saturday meal plan </option>
+                </select>
+                <input type="submit" value="Add to weekly meal plan!" />
+            </form>
         </b>
     </p>
     <img src={{recipe_images[i]}}>

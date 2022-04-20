@@ -26,3 +26,12 @@ class Favorite(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     google_id = db.Column(db.Float, ForeignKey("Users.google_id"))
     recipe_name = db.Column(db.String(100))  # store recipe name
+
+
+# Meal plan table
+class Plan(db.Model):
+    __tablename__ = "Plan"
+    id = db.Column(db.Integer, primary_key=True)
+    google_id = db.Column(db.Float, ForeignKey("Users.google_id"))
+    day = db.Column(db.String(80)) # store day of the week
+    recipe_name = db.Column(db.String(100))  # store recipe name
