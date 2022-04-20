@@ -2,23 +2,27 @@
 # pylint: disable=missing-module-docstring
 # pylint: disable=missing-class-docstring
 # pylint: disable=no-member
+
 import flask
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import relationship, backref
 from flask_login import UserMixin
 
 
-app = flask.Flask(__name__)
-#app.secret_key = "Secret"
-db = SQLAlchemy(app)
+db = SQLAlchemy()
 
-
+# User table
 class User(db.Model, UserMixin):
+    __tablename__ = "Users"
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100), unique=True, nullable=False)
+    google_id = db.Column(db.Float, unique=True, nullable=False)
+    username = db.Column(db.String(100), unique=False, nullable=False)
 
 
-# class Favorites(db.Model):
-# id = db.Column(db.Integer, primary_key=True)
-
-
-db.create_all()
+# Favorite recipes table
+class Favorite(db.Model):
+    __tablename__ = "Favorites"
+    id = db.Column(db.Integer, primary_key=True)
+    google_id = db.Column(db.Float, ForeignKey("Users.google_id"))
+    recipe_name = db.Column(db.String(100))  # store recipe name

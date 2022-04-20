@@ -1,56 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <div style="float:right;">Signed in as {{username}} <a href='/logout'><button>Logout</button></a>
+        <p><a href='/get_favorites'><button>View your favorite recipes!</button></a></p>
+    </div>
+    <form action="/get-food" method="GET">
+        <div class="center" id="search">
+            <input type="search" id="food_input" name="food_input" placeholder="Search" required>
+            <button type="submit" id="search_button" name="food_button" for="food_input">Search</button>
+        </div>
+    </form>
     <title>Recipe details</title>
 </head>
+
 <body>
     <div class="row" id="header">
         <div class="col">
             <h1>Results for {{search_term}}:</h1>
         </div>
-    </div> 
-       
-    
-        <p>{{recipe_title}}</p>
-        <img src={{recipe_image}}>
-        <ul>
-            {% for ingredient in recipe_ingredients %}
-            <li>{{ingredient}}</li>
-            {% endfor %}
-        </ul>
-        <ol>
-            {% for instruction in recipe_instructions %}
-            <li>{{instruction}}</li>
-            {% endfor %}
-        </ol>
+    </div>
 
-        <p>{{recipe_title2}}</p>
-        <img src={{recipe_image2}}>
-        <ul>
-            {% for ingredient in recipe_ingredients2 %}
-            <li>{{ingredient}}</li>
-            {% endfor %}
-        </ul>
-        <ol>
-            {% for instruction in recipe_instructions2 %}
-            <li>{{instruction}}</li>
-            {% endfor %}
-        </ol>
+    {%for i in range(0, recipe_count)%}
+    <p>
+        <b>
+            <form method="POST" action="/add_favorite">
+                <input type="hidden" name="recipeName" value="{{recipe_titles[i]}}" readonly />
+                {{recipe_titles[i]}} <input type="submit" value="Add to favorites!" />
+            </form>
+        </b>
+    </p>
+    <img src={{recipe_images[i]}}>
+    <ul>
+        <b>Ingredients:</b>
+        {% for ingredient in recipe_ingredients[i] %}
+        <li>{{ingredient}}</li>
+        {% endfor %}
+    </ul>
+    <ol>    
+        <b>Instructions:</b>
+        {% for instruction in recipe_instructions[i] %}
+        <li>{{instruction}}</li>
+        {% endfor %}
+    </ol>
 
-        <p>{{recipe_title3}}</p>
-        <img src={{recipe_image3}}>
-        <ul>
-            {% for ingredient in recipe_ingredients3 %}
-            <li>{{ingredient}}</li>
-            {% endfor %}
-        </ul>
-        <ol>
-            {% for instruction in recipe_instructions3 %}
-            <li>{{instruction}}</li>
-            {% endfor %}
-        </ol>
-    
-    
+    {% endfor %}
 </body>
+
 </html>

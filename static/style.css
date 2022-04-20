@@ -1,4 +1,4 @@
-body{
+body {
     color: ghostwhite;
     text-align: justify;
     background-image: url("https://as2.ftcdn.net/v2/jpg/02/44/71/07/1000_F_244710705_kJbRGNfdwXq4zfikaaXE77iQCAHsQjt0.jpg");
@@ -6,4 +6,39 @@ body{
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
+}
+
+/* Styling the login page */
+.row {
+    margin-top: 10%;
+    margin-left: 38%;
+    display: block;
+    margin-right: 20%;
+}
+
+.btn {
+    display: inline-block;
+    text-decoration: none;
+    color: #fff;
+    border: 2px solid #fff;
+    padding: 10px 30px;
+    font-size: 18px;
+    background: transparent;
+    position: relative;
+    cursor: pointer;
+}
+
+.btn:hover {
+    border: 2px solid hsl(241, 84%, 60%);;
+    background: hsl(241, 84%, 60%);
+    transition: 1s;
+}
+
+.center {
+    margin: 0;
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
