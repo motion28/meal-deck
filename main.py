@@ -74,7 +74,7 @@ secrets = {
         "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
         "client_secret": GOOGLE_CLIENT_SECRET,
         "redirect_uris": [
-            "https://pacific-springs-45744.herokuapp.com/auth/google/callback",
+            "https://rocky-basin-61067.herokuapp.com/auth/google/callback",
             "http://127.0.0.1:5000/callback",
         ],
     }
@@ -93,9 +93,9 @@ flow = Flow.from_client_secrets_file(
         "openid",
     ],
     # For local deployment, use this line of code:
-    redirect_uri="http://127.0.0.1:5000/callback",
+    # redirect_uri="http://127.0.0.1:5000/callback",
     # For heroku deployment, use this redirect_uri
-    # redirect_uri="https://pacific-springs-45744.herokuapp.com/auth/google/callback",
+    redirect_uri="https://rocky-basin-61067.herokuapp.com/auth/google/callback",
 )
 
 
@@ -322,9 +322,9 @@ def get_plan():
 
 
 # For local deployment, use this app.run() line:
-app.run(use_reloader = True, debug= True)
+# app.run(use_reloader = True, debug= True)
 
 # For heroku deployment, uncomment the below two:
 
-# port = int(os.environ.get("PORT", 5000))
-# app.run(host="0.0.0.0", port=port, debug=True)
+port = int(os.environ.get("PORT", 5000))
+app.run(host="0.0.0.0", port=port, debug=True)
