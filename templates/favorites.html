@@ -87,18 +87,5 @@
 
 
 
-    {% for favorite in favorites %}
-    <form action="/delete_favorite" method="POST">
-        {{favorite.recipe_name}}
-        <button type="submit" id="search_button" name="recipe_name" value="{{favorite.recipe_name}}"> Delete!</button>
-    </form>
-
-    <form action="/get-food" method="GET">
-        <p>
-            <button type="submit" id="search_button" name="food_input" value="{{favorite.recipe_name}}"> -> View
-                Details!</button>
-        </p>
-    </form>
-    {% endfor %}
-    </div>
 </body>
+</html>
