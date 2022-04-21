@@ -93,9 +93,9 @@ flow = Flow.from_client_secrets_file(
         "openid",
     ],
     # For local deployment, use this line of code:
-    # redirect_uri="http://127.0.0.1:5000/callback",
+    redirect_uri="http://127.0.0.1:5000/callback",
     # For heroku deployment, use this redirect_uri
-    redirect_uri="https://rocky-basin-61067.herokuapp.com/callback",
+    # redirect_uri="https://rocky-basin-61067.herokuapp.com/callback",
 )
 
 
@@ -236,22 +236,36 @@ def add_plan():
     Function which adds a recipe to the meal plan
     """
     exists = Plan.query.filter_by(
-        google_id=session["google_id"], recipe_name=request.form["recipeName"], day=request.form["day"] 
+        google_id=session["google_id"],
+        recipe_name=request.form["recipeName"],
+        day=request.form["day"],
     ).first()  # If not exists then add to db, if already exists, do not add.
     if not exists:
         new_plan = Plan(
             google_id=session["google_id"],
             recipe_name=request.form["recipeName"],
-            day=request.form["day"]
+            day=request.form["day"],
         )
         db.session.add(new_plan)
         db.session.commit()
-        flask.flash("You added " + request.form["recipeName"] + " to the " + request.form["day"] + " meal plan")
+        flask.flash(
+            "You added "
+            + request.form["recipeName"]
+            + " to the "
+            + request.form["day"]
+            + " meal plan"
+        )
         return flask.redirect("/get_plan")
 
     flask.flash(
-        "You already have " + request.form["recipeName"] + " in your " + request.form["day"] + " meal plan")
+        "You already have "
+        + request.form["recipeName"]
+        + " in your "
+        + request.form["day"]
+        + " meal plan"
+    )
     return flask.redirect("/get_plan")
+
 
 @app.route("/delete_favorite", methods=["POST"])
 @login_required
@@ -267,6 +281,7 @@ def delete_favorite():
     flask.flash("You deleted " + request.form["recipe_name"] + " from your favorites!")
     return flask.redirect("/get_favorites")
 
+
 @app.route("/delete_plan", methods=["POST"])
 @login_required
 def delete_plan():
@@ -274,7 +289,9 @@ def delete_plan():
     Function which deletes the corresponding meal plan from database
     """
     to_delete = Plan.query.filter_by(
-        google_id=session["google_id"], recipe_name=request.form["recipe_name"], day=request.form["day"]
+        google_id=session["google_id"],
+        recipe_name=request.form["recipe_name"],
+        day=request.form["day"],
     ).first()
     db.session.delete(to_delete)
     db.session.commit()
@@ -295,6 +312,7 @@ def get_favorites():
         favorites=favorites,
     )
 
+
 @app.route("/get_plan")
 @login_required
 def get_plan():
@@ -304,10 +322,16 @@ def get_plan():
     sunday = Plan.query.filter_by(google_id=session["google_id"], day="sunday").all()
     monday = Plan.query.filter_by(google_id=session["google_id"], day="monday").all()
     tuesday = Plan.query.filter_by(google_id=session["google_id"], day="tuesday").all()
-    wednesday = Plan.query.filter_by(google_id=session["google_id"], day="wednesday").all()
-    thursday = Plan.query.filter_by(google_id=session["google_id"], day="thursday").all()
+    wednesday = Plan.query.filter_by(
+        google_id=session["google_id"], day="wednesday"
+    ).all()
+    thursday = Plan.query.filter_by(
+        google_id=session["google_id"], day="thursday"
+    ).all()
     friday = Plan.query.filter_by(google_id=session["google_id"], day="friday").all()
-    saturday = Plan.query.filter_by(google_id=session["google_id"], day="saturday").all()
+    saturday = Plan.query.filter_by(
+        google_id=session["google_id"], day="saturday"
+    ).all()
     return flask.render_template(
         "plan.html",
         username=current_user.username,
@@ -322,9 +346,9 @@ def get_plan():
 
 
 # For local deployment, use this app.run() line:
-# app.run(use_reloader = True, debug= True)
+app.run(use_reloader=True, debug=True)
 
 # For heroku deployment, uncomment the below two:
 
-port = int(os.environ.get("PORT", 5000))
-app.run(host="0.0.0.0", port=port, debug=True)
+# port = int(os.environ.get("PORT", 5000))
+# app.run(host="0.0.0.0", port=port, debug=True)

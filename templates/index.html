@@ -21,11 +21,15 @@
 {% endwith %}
 
 <body>
+
     <div>
         <div class="r" id="header">
             <div class="col">
-                <h1>Welcome to MealDeck, {{username}}! <a href='/logout'><button type="button"
-                            class="btn btn-primary btn-lg">Logout</button></a></h1>
+                <h1>Welcome to MealDeck, {{username}}!
+                    <a href='/get_favorites'><button type="button" class="btn">Your Favorites</button></a>
+                    <a href='/get_plan'><button type="button" class="btn">MealPlan</button></a>
+                    <a href='/logout'><button type="button" class="btn btn-primary btn-lg">Logout</button></a>
+                </h1>
             </div>
         </div>
         <div class="random">
@@ -35,6 +39,7 @@
         </div>
 
         <div class="frm" id="search">
+            <br>
             <h3>What would you like to eat?</h3>
             <div class="search-box">
                 <form action="/get-food" method="GET">
@@ -45,11 +50,6 @@
                     </button>
                 </form>
             </div>
-        </div>
-
-        <div class="favorite">
-            <br><br>
-            <a href='/get_favorites'><button type="button" class="btn">View your favorite recipes!</button>
         </div>
 
     </div>
