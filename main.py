@@ -94,6 +94,10 @@ flow = Flow.from_client_secrets_file(
     ],
     # For local deployment, use this line of code:
     redirect_uri="http://127.0.0.1:5000/callback",
+<<<<<<< HEAD
+=======
+
+>>>>>>> e9f072f167102877484e249c94b4af6428cc82b9
     # For heroku deployment, use this redirect_uri
     # redirect_uri="https://rocky-basin-61067.herokuapp.com/callback",
 )
@@ -288,11 +292,15 @@ def delete_plan():
     """
     Function which deletes the corresponding meal plan from database
     """
+    google_id=session["google_id"]
+    recipe_name=request.form["recipe_name"]
+    day=request.form["day"]
     to_delete = Plan.query.filter_by(
-        google_id=session["google_id"],
-        recipe_name=request.form["recipe_name"],
-        day=request.form["day"],
+        google_id=google_id,
+        recipe_name=recipe_name,
+        day=day,
     ).first()
+    # print(to_delete)
     db.session.delete(to_delete)
     db.session.commit()
     flask.flash("You deleted " + request.form["recipe_name"])
