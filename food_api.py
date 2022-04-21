@@ -37,7 +37,7 @@ def get_random_foodItem():
 
     RECIPE_API_KEY = os.getenv("SPOON_key")
 
-    url = f"https://api.spoonacular.com/recipes/complexSearch?query={foodItem}&apiKey={RECIPE_API_KEY}&number=1"
+    url = f"https://api.spoonacular.com/recipes/complexSearch?query={foodItem}&apiKey={RECIPE_API_KEY}&number=3"
     response = requests.get(url).json()
     foodTitle = response["results"][0]["title"]
     foodImage = response["results"][0]["image"]
