@@ -55,44 +55,53 @@
         <b>
             <form method="POST" action="/add_favorite">
                 <input type="hidden" name="recipeName" value="{{recipe_titles[i]}}" readonly />
-                <h4>{{recipe_titles[i]}} <button class="btn btn-outline-primary" type="submit" />
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        class="bi bi-bookmark-check" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd"
-                            d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z" />
-                        <path
-                            d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z" />
-                    </svg>
-                    Add to favorites! </button>
-                </h4>
             </form>
+            <div class="card" style="width: 18rem;">
+                <img src={{recipe_images[i]}} class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{recipe_titles[i]}}</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"> <button class="btn btn-outline-primary" type="submit" />
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-bookmark-check" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z" />
+                            <path
+                                d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z" />
+                        </svg>
+                        Add to favorites! </button>
+                    </li>
+                    <li class="list-group-item">
+                        <form method="POST" action="/add_plan">
+                            <input type="hidden" name="recipeName" value="{{recipe_titles[i]}}" readonly />
+                            <select name="day" required>
+                                <option value="" disabled selected>Choose a date</option>
+                                <option value="sunday"> Add to Sunday meal plan </option>
+                                <option value="monday"> Add to Monday meal plan </option>
+                                <option value="tuesday"> Add to Tuesday meal plan </option>
+                                <option value="wednesday"> Add to Wednesday meal plan </option>
+                                <option value="thursday"> Add to Thursday meal plan </option>
+                                <option value="friday"> Add to Friday meal plan </option>
+                                <option value="saturday"> Add to Saturday meal plan </option>
+                            </select>
+                            <button class="btn btn-outline-success" type="submit" />
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-card-checklist" viewBox="0 0 16 16">
+                                <path
+                                    d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
+                                <path
+                                    d="M7 5.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0zM7 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0z" />
+                            </svg>
+                            Add to MealPlan!</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
 
-            <form method="POST" action="/add_plan">
-                <input type="hidden" name="recipeName" value="{{recipe_titles[i]}}" readonly />
-                <select name="day" required>
-                    <option value="" disabled selected>Choose here to add to meal plan</option>
-                    <option value="sunday"> Add to Sunday meal plan </option>
-                    <option value="monday"> Add to Monday meal plan </option>
-                    <option value="tuesday"> Add to Tuesday meal plan </option>
-                    <option value="wednesday"> Add to Wednesday meal plan </option>
-                    <option value="thursday"> Add to Thursday meal plan </option>
-                    <option value="friday"> Add to Friday meal plan </option>
-                    <option value="saturday"> Add to Saturday meal plan </option>
-                </select>
-                <button class="btn btn-outline-success" type="submit" />
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                    class="bi bi-card-checklist" viewBox="0 0 16 16">
-                    <path
-                        d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
-                    <path
-                        d="M7 5.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0zM7 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0z" />
-                </svg>
-                Add to MealPlan!</button>
-            </form>
+
         </b>
     </p>
-    <img src={{recipe_images[i]}}>
-
     <div class="card" style="width: 40rem;">
         <div class="card-body">
             <h5 class="card-title">Ingredients</h5>
