@@ -95,10 +95,10 @@ flow = Flow.from_client_secrets_file(
         "https://www.googleapis.com/auth/userinfo.email",
         "openid",
     ],
-    # For local deployment, use this line of code:
-    redirect_uri="http://127.0.0.1:5000/callback",
+    #For local deployment, use this line of code:
+    #redirect_uri="http://127.0.0.1:5000/callback",
     # For heroku deployment, use this redirect_uri
-    # redirect_uri="https://rocky-basin-61067.herokuapp.com/callback",
+    redirect_uri="https://rocky-basin-61067.herokuapp.com/callback",
 )
 
 
@@ -353,9 +353,9 @@ def get_plan():
 
 
 # For local deployment, use this app.run() line:
-app.run(use_reloader=True, debug=True)
+#app.run(use_reloader=True, debug=True)
 
 # For heroku deployment, uncomment the below two:
 
-# port = int(os.environ.get("PORT", 5000))
-# app.run(host="0.0.0.0", port=port, debug=True)
+port = int(os.environ.get("PORT", 5000))
+app.run(host="0.0.0.0", port=port, debug=True)
