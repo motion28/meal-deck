@@ -24,7 +24,7 @@ from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
 from pip._vendor import cachecontrol
 
-from models import db, User, Favorite
+from models import db, User, Favorite, Plan
 
 load_dotenv(find_dotenv())
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"  # set environment to HTTPS
@@ -74,7 +74,7 @@ secrets = {
         "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
         "client_secret": GOOGLE_CLIENT_SECRET,
         "redirect_uris": [
-            "https://pacific-springs-45744.herokuapp.com/auth/google/callback",
+            "https://rocky-basin-61067.herokuapp.com/auth/google/callback",
             "http://127.0.0.1:5000/callback",
         ],
     }
@@ -94,8 +94,9 @@ flow = Flow.from_client_secrets_file(
     ],
     # For local deployment, use this line of code:
     redirect_uri="http://127.0.0.1:5000/callback",
+    
     # For heroku deployment, use this redirect_uri
-    # redirect_uri="https://pacific-springs-45744.herokuapp.com/auth/google/callback",
+    #redirect_uri="https://rocky-basin-61067.herokuapp.com/callback",
 )
 
 
@@ -164,11 +165,13 @@ def meal_deck():
     """
     Main portion of the app after user has logged in
     """
-    # randomFood = food_api.get_random_foodItem()
     foodTitle, foodImage = food_api.get_random_foodItem()
     if current_user.is_authenticated:  # if authenticated, go to main page
         return flask.render_template(
-            "index.html", username=current_user.username, foodTitle=foodTitle, foodImage=foodImage,
+            "index.html",
+            username=current_user.username,
+            foodTitle=foodTitle,
+            foodImage=foodImage,
         )
     flask.flash("You must be logged in to access this page!")
     return flask.redirect("/")
@@ -227,6 +230,44 @@ def add_favorite():
     return flask.redirect("/get_favorites")
 
 
+@app.route("/add_plan", methods=["POST"])
+@login_required
+def add_plan():
+    """
+    Function which adds a recipe to the meal plan
+    """
+    exists = Plan.query.filter_by(
+        google_id=session["google_id"],
+        recipe_name=request.form["recipeName"],
+        day=request.form["day"],
+    ).first()  # If not exists then add to db, if already exists, do not add.
+    if not exists:
+        new_plan = Plan(
+            google_id=session["google_id"],
+            recipe_name=request.form["recipeName"],
+            day=request.form["day"],
+        )
+        db.session.add(new_plan)
+        db.session.commit()
+        flask.flash(
+            "You added "
+            + request.form["recipeName"]
+            + " to the "
+            + request.form["day"]
+            + " meal plan"
+        )
+        return flask.redirect("/get_plan")
+
+    flask.flash(
+        "You already have "
+        + request.form["recipeName"]
+        + " in your "
+        + request.form["day"]
+        + " meal plan"
+    )
+    return flask.redirect("/get_plan")
+
+
 @app.route("/delete_favorite", methods=["POST"])
 @login_required
 def delete_favorite():
@@ -240,6 +281,27 @@ def delete_favorite():
     db.session.commit()
     flask.flash("You deleted " + request.form["recipe_name"] + " from your favorites!")
     return flask.redirect("/get_favorites")
+
+
+@app.route("/delete_plan", methods=["POST"])
+@login_required
+def delete_plan():
+    """
+    Function which deletes the corresponding meal plan from database
+    """
+    google_id=session["google_id"]
+    recipe_name=request.form["recipe_name"]
+    day=request.form["day"]
+    to_delete = Plan.query.filter_by(
+        google_id=google_id,
+        recipe_name=recipe_name,
+        day=day,
+    ).first()
+    # print(to_delete)
+    db.session.delete(to_delete)
+    db.session.commit()
+    flask.flash("You deleted " + request.form["recipe_name"])
+    return flask.redirect("/get_plan")
 
 
 @app.route("/get_favorites")
@@ -256,8 +318,40 @@ def get_favorites():
     )
 
 
+@app.route("/get_plan")
+@login_required
+def get_plan():
+    """
+    Function which handles the page with the user's weekly meal plan
+    """
+    sunday = Plan.query.filter_by(google_id=session["google_id"], day="sunday").all()
+    monday = Plan.query.filter_by(google_id=session["google_id"], day="monday").all()
+    tuesday = Plan.query.filter_by(google_id=session["google_id"], day="tuesday").all()
+    wednesday = Plan.query.filter_by(
+        google_id=session["google_id"], day="wednesday"
+    ).all()
+    thursday = Plan.query.filter_by(
+        google_id=session["google_id"], day="thursday"
+    ).all()
+    friday = Plan.query.filter_by(google_id=session["google_id"], day="friday").all()
+    saturday = Plan.query.filter_by(
+        google_id=session["google_id"], day="saturday"
+    ).all()
+    return flask.render_template(
+        "plan.html",
+        username=current_user.username,
+        sunday=sunday,
+        monday=monday,
+        tuesday=tuesday,
+        wednesday=wednesday,
+        thursday=thursday,
+        friday=friday,
+        saturday=saturday,
+    )
+
+
 # For local deployment, use this app.run() line:
-app.run()
+app.run(use_reloader=True, debug=True)
 
 # For heroku deployment, uncomment the below two:
 
