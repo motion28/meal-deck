@@ -3,14 +3,16 @@
 # pylint: disable=missing-class-docstring
 # pylint: disable=no-member
 # pylint: disable=protected-access
+# pylint: disable=unspecified-encoding
+# pylint: disable=import-error
+# pylint: disable=line-too-long
 
 import os
 import pathlib
+import json
 import requests
 import flask
 import google.auth.transport.requests
-import food_api
-import json
 from flask import session, abort, request
 from flask_login import (
     LoginManager,
@@ -25,6 +27,7 @@ from google_auth_oauthlib.flow import Flow
 from pip._vendor import cachecontrol
 
 from models import db, User, Favorite, Plan
+import food_api
 
 load_dotenv(find_dotenv())
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"  # set environment to HTTPS
@@ -94,9 +97,8 @@ flow = Flow.from_client_secrets_file(
     ],
     # For local deployment, use this line of code:
     redirect_uri="http://127.0.0.1:5000/callback",
-    
     # For heroku deployment, use this redirect_uri
-    #redirect_uri="https://rocky-basin-61067.herokuapp.com/callback",
+    # redirect_uri="https://rocky-basin-61067.herokuapp.com/callback",
 )
 
 
@@ -289,9 +291,9 @@ def delete_plan():
     """
     Function which deletes the corresponding meal plan from database
     """
-    google_id=session["google_id"]
-    recipe_name=request.form["recipe_name"]
-    day=request.form["day"]
+    google_id = session["google_id"]
+    recipe_name = request.form["recipe_name"]
+    day = request.form["day"]
     to_delete = Plan.query.filter_by(
         google_id=google_id,
         recipe_name=recipe_name,
