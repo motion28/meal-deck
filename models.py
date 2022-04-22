@@ -2,11 +2,11 @@
 # pylint: disable=missing-module-docstring
 # pylint: disable=missing-class-docstring
 # pylint: disable=no-member
+# pylint: disable=import-error
+# pylint: disable=too-few-public-methods
 
-import flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import relationship, backref
 from flask_login import UserMixin
 
 
