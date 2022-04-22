@@ -2,16 +2,18 @@
 
 **MealDeck** by Moumin Ali, Augustine Li, Nestor Kaputo, and Kirtan Kabariya
 
-**Heroku Deployment: https://pacific-springs-45744.herokuapp.com/**
+**Heroku Deployment: https://rocky-basin-61067.herokuapp.com/**
 
-If you get an url error when trying to log in via google, press back and try again. There's some google issues to sort out for sprint 2.
+If you get an url error when trying to log in via google, press back and try again. Sometimes Google API is slow for some reason.
 
 
 ## Setup Instructions
 1. To install required libraries for Visual Studio Code, type the following command in the terminal:
 `pip3 install -r requirements.txt`
 2. To setup this program for running, we need **Google Client** and **Spoonacular API** prepared:
-3. If you wish to test locally change the value of `redirect_uri` in line 92 of `main.py` to http://127.0.0.1:5000/callback.
+3. If you wish to test locally change the value of `redirect_uri` in line 99 of `main.py` to http://127.0.0.1:5000/callback. As well as uncomment line 356 and comment line 360 and 361.
+
+
 **We need to setup .env file**
 
 **Google Client Setup:**
