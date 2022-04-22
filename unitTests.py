@@ -1,12 +1,19 @@
+# pylint: disable=invalid-name
+# pylint: disable=line-too-long
+# pylint: disable=missing-docstring
+# pylint: disable=import-error
+
 import unittest
 import pathlib
-from unittest.mock import MagicMock, patch
-from main import get_food
-from login import load_user
-from models import User
 import sys
 import os
+from login import load_user
+import patch
+
 from dotenv import find_dotenv, load_dotenv
+from main import get_food
+from models import User
+
 
 current = os.path.dirname(os.path.realpath(__file__))
 parent = os.path.dirname(current)
@@ -16,7 +23,10 @@ INPUT = "INPUT"
 EXP_OUTPUT = "EXP_OUTPUT"
 
 
-class test_get_food(unittest.TestCase):
+class test_Get_food(unittest.TestCase):
+    """
+    This class contains the test cases for the get_food function"""
+
     def test_get_food(self):
         """
         This test will check if the function returns the correct food
@@ -26,17 +36,15 @@ class test_get_food(unittest.TestCase):
                 INPUT: "",
                 EXP_OUTPUT: {
                     "title": "",
-                    "id": "",
                     "imageURL": "",
-                    "extendedIngredients": "",
-                    "analyzedInstructions": "",
+                    "extendedIngredients": "[]",
+                    "analyzedInstructions": "[]",
                 },
             },
             {
                 INPUT: "apple",
                 EXP_OUTPUT: {
                     "title": "Apple",
-                    "id": "1",
                     "imageURL": "https://spoonacular.com/recipeImages/apple-pie-9-636894.jpg",
                     "extendedIngredients": "1 apple",
                     "analyzedInstructions": "[]",
@@ -46,7 +54,6 @@ class test_get_food(unittest.TestCase):
                 INPUT: "pasta",
                 EXP_OUTPUT: {
                     "title": "Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs",
-                    "id": "716429",
                     "imageURL": "https://spoonacular.com/recipeImages/pasta-with-garlic-scallions-cauliflower-breadcrumbs-7-636894.jpg",
                     "extendedIngredients": "1/2 cup olive oil, 1/2 cup chopped fresh parsley, 1/2 cup chopped fresh chives, 1/2 cup chopped fresh garlic, 1/2 cup chopped fresh oregano, 1/2 cup chopped fresh basil, 1/2 cup chopped fresh thyme, 1/2 cup chopped fresh rosemary, 1/2 cup chopped fresh fennel, 1/2 cup chopped fresh parsley, 1/2 cup chopped fresh chives, 1/2 cup chopped fresh garlic, 1/2 cup chopped fresh oregano, 1/2 cup chopped fresh basil, 1/2 cup chopped fresh thyme, 1/2 cup chopped fresh rosemary, 1/2 cup chopped fresh fennel, 1/2 cup chopped fresh parsley, 1/2 cup chopped fresh chives, 1/2 cup chopped fresh garlic, 1/2 cup chopped fresh oregano, 1/2 cup chopped fresh basil, 1/2 cup chopped fresh thyme, 1/2 cup chopped fresh rosemary, 1/2 cup chopped fresh fennel, 1/2 cup chopped fresh parsley, 1/2 cup chopped fresh chives, 1/2 cup chopped fresh garlic, 1/2 cup chopped fresh oregano, 1/2 cup chopped fresh basil, 1/2 cup chopped fresh thyme, 1/2 cup chopped fresh rosemary, 1/2 cup chopped fresh fennel, 1/2 cup chopped fresh parsley, 1/2 cup chopped fresh chives, 1/2 cup chopped fresh garlic, 1/2 cup chopped fresh oregano, 1/2 cup chopped fresh basil, 1/2 cup chopped fresh thyme, 1/2 cup chopped fresh rosemary, 1/2 cup chopped fresh fennel, 1/2 cup chopped fresh parsley, 1/2 cup chopped fresh chives, 1/2 cup chopped fresh garlic, 1/2 cup chopped fresh oregano, 1/2 cup chopped fresh basil, 1/2 cup chopped fresh thyme, 1/2 cup chopped fresh rosemary, 1/2 cup chopped fresh fennel, 1/2 cup chopped fresh parsley",
                     "analyzedInstructions": "In a large skillet, melt butter over medium heat until foamy. Then add bread crumbs, tossing to coat in butter, until toasted and lightly browned. Remove from pan into small bowl; mix in cheese and about a tablespoon of the green scallion tops.",
@@ -66,7 +73,6 @@ class test_get_food(unittest.TestCase):
                 INPUT: "1111",
                 EXP_OUTPUT: {
                     "title": "",
-                    "id": "",
                     "imageURL": "",
                     "extendedIngredients": "",
                     "analyzedInstructions": "",
@@ -77,7 +83,7 @@ class test_get_food(unittest.TestCase):
         for test_params in self.success_test_params:
             with patch("main.get_food") as mock_get_food:
                 mock_get_food.return_value = test_params[EXP_OUTPUT]
-                self.assertEqual(get_food(test_params[INPUT]), test_params[EXP_OUTPUT])
+                self.assertEqual(get_food(), test_params[EXP_OUTPUT])
 
         # Set up the test
         food = get_food()
@@ -104,10 +110,12 @@ class test_main_py(unittest.TestCase):
     """
 
     def client_secrets_exists(self):
+        """Reads the client_secrets.json file and checks if it exists"""
         secretsPath = os.path.join(pathlib.Path(__file__).parent, "client_secrets.json")
-        self.assertIsFile(secretsPath)
+        return bool(os.path.exists(secretsPath))
 
     def env_test(self):
+        """This function tests if the environment variables are set"""
         load_dotenv(find_dotenv())
         spoon_exists = os.getenv("SPOON_key")
         client_id_exists = os.getenv("GOOGLE_CLIENT_ID")

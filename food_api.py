@@ -2,11 +2,12 @@
 # pylint: disable=missing-module-docstring
 # pylint: disable=missing-class-docstring
 # pylint: disable=no-member
+# pylint: disable=import-error
 # pylint: disable=line-too-long
+# pylint: disable=too-many-locals
 
 import os
 import random
-from urllib import response
 import requests
 from dotenv import find_dotenv, load_dotenv
 
@@ -93,7 +94,6 @@ def recipe_call(search_term):
         recipe_ingredients,
         recipe_instructions,
     )  # return recipe info as a tuple
-
 
 # r = recipe_call("chicken")
 # print(r[2][0])
