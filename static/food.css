@@ -1,0 +1,153 @@
+* {
+    font-family: 'Zilla Slab', serif;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    font-size: 18px;
+    line-height: 1.5;
+    font-weight: 400;
+    height: 100%;
+    background: lightgray;
+}
+
+h2 {
+    color: #FC7D49;
+    font-weight: 400;
+}
+
+.recipe {
+    display: flex;
+    flex-flow: row wrap;
+    height: 100%;
+    width: 100%;
+}
+
+.recipe-image {
+    flex: 50%;
+    position: relative;
+    max-width: 300px;
+    min-width: 300px;
+    font-size: 1.5rem;
+}
+
+#recipe-text {
+    flex: 1;
+}
+
+.recipe-info {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+
+.recipe-directions,
+.recipe-ingredients {
+    max-width: 24rem;
+    flex: 1;
+    background: ghostwhite;
+    color: #3F0B1B;
+    padding: 1rem;
+    margin: 0 .5rem;
+}
+
+.recipe-directions {
+    min-width: 16rem;
+}
+
+.recipe-ingredients {
+    min-width: 24rem;
+}
+
+.recipe-ingredients ul {
+    display: inline-block;
+}
+
+.text-wrapper {
+    padding: 1rem;
+    height: 100%;
+    overflow-y: auto;
+}
+
+ul {
+    list-style-type: none;
+}
+
+.recipe-text {
+    max-width: 50em;
+    margin: auto;
+}
+
+.recipe-text h2 {
+    text-align: center;
+    margin-top: .25rem;
+    margin-bottom: .25rem;
+}
+
+.recipe-text>blockquote {
+    max-width: 48rem;
+    color: #3F0B1B;
+    margin: 1.5rem .5rem;
+    padding: 1rem;
+    background: ghostwhite;
+}
+
+@media (max-width:90rem) and (min-width:1080px),
+(max-width:60rem) {
+    .recipe-info>* {
+        margin-bottom: 1.5rem;
+        flex: 1 0 25rem;
+        max-width: 25rem;
+    }
+
+    .recipe-text>blockquote {
+        max-width: 25rem;
+        margin: 1.5rem auto;
+    }
+}
+
+@media (max-width:1080px) and (min-width:60rem) {
+    .recipe-text>blockquote {
+        max-width: 50rem;
+    }
+}
+
+@media (max-width:1080px) {
+    .recipe-image {
+        max-width: 100%;
+        min-width: 0;
+        background-size: cover;
+    }
+
+    .recipe-image,
+    #recipe-text {
+        min-height: 100%;
+        flex: 1 0 100%;
+    }
+
+    #mobile-recipe-anchor {
+        display: block;
+    }
+
+    .text-wrapper {
+        max-height: 100%;
+        overflow-y: visible;
+    }
+}
+
+@media (max-width:31rem) {
+
+    .recipe-directions,
+    .recipe-ingredients {
+        min-width: 10em;
+        flex: 1 0 100%;
+    }
+}
