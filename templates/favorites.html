@@ -63,26 +63,30 @@
         </div>
     </nav>
     <!--Favorite recipe item-->
-    <div class="flex_wrapper">
-        <div class="logo_box">Hi {{username}}<br><span>~Favorite Recipes~</span></div>
-        <div class="recipe_box">
-            {% for favorite in favorites %}
-            <div class="card">
-                <div class="card_description_header">{{favorite.recipe_name}}</div>
-                <div class="card_description">
-                    <form action="/get-food" method="GET">
-                        <p>
-                            <button type="submit" id="search_button" name="food_input" value="{{favorite.recipe_name}}">
-                                View Recipe </button>
-                        </p>
-                    </form>
-                    <form action="/delete_favorite" method="POST">
-                        <button type="submit" id="search_button" name="recipe_name" value="{{favorite.recipe_name}}">
-                            Delete</button>
-                    </form>
+    <div class="overflow-scroll">
+        <div class="flex_wrapper">
+            <div class="logo_box">Hi {{username}}<br><span>~Favorite Recipes~</span></div>
+            <div class="recipe_box">
+                {% for favorite in favorites %}
+                <div class="card">
+                    <div class="card_description_header">{{favorite.recipe_name}}</div>
+                    <div class="card_description">
+                        <form action="/get-food" method="GET">
+                            <p>
+                                <button type="submit" id="search_button" name="food_input"
+                                    value="{{favorite.recipe_name}}">
+                                    View Recipe </button>
+                            </p>
+                        </form>
+                        <form action="/delete_favorite" method="POST">
+                            <button type="submit" id="search_button" name="recipe_name"
+                                value="{{favorite.recipe_name}}">
+                                Delete</button>
+                        </form>
+                    </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
     </div>
     </div>
