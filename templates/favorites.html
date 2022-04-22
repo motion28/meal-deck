@@ -1,5 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{%for message in messages %}
+<b>{{message}}</b>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
 
 <head>
     <meta charset="UTF-8">
@@ -54,10 +62,9 @@
             </ul>
         </div>
     </nav>
-
     <!--Favorite recipe item-->
     <div class="flex_wrapper">
-        <div class="logo_box">Hi {{username}}<br><span style="header_title">~Favorite Recipes~</span></div>
+        <div class="logo_box">Hi {{username}}<br><span>~Favorite Recipes~</span></div>
         <div class="recipe_box">
             {% for favorite in favorites %}
             <div class="card">
@@ -79,14 +86,7 @@
         </div>
     </div>
     </div>
-
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    {%for message in messages %}
-    <b>{{message}}</b>
-    {% endfor %}
-    {% endif %}
-    {% endwith %}
+    </div>
 
 </body>
 
