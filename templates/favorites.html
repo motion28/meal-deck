@@ -13,15 +13,19 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500&family=Zilla+Slab:ital@1&display=swap"
-            rel="stylesheet">
-    <title>Favorite Recipes</title>
+    <!--Google Fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500&family=Zilla+Slab:ital@1&display=swap"
+        rel="stylesheet">
+    <!--CSS style page-->
     <link rel="stylesheet" href="/static/fav.css">
+    <title>Favorite Recipes</title>
+
 </head>
 
 <body>
+    <!--Navbar section-->
     <nav class="navbar sticky-top navbar-expand-md navbar-dark bg-dark">
         <a href="/meal_deck" class="navbar-brand">MealDeck</a>
 
@@ -50,30 +54,31 @@
             </ul>
         </div>
     </nav>
+
+    <!--Favorite recipe item-->
     <div class="flex_wrapper">
         <div class="logo_box">Hi {{username}}<br><span style="header_title">~Favorite Recipes~</span></div>
         <div class="recipe_box">
             {% for favorite in favorites %}
-          <div class="card">
-            <div class="card_description_header">{{favorite.recipe_name}}</div>
-            <div class="card_description">
-                <form action="/get-food" method="GET">
-                    <p>
-                        <button type="submit" id="search_button" name="food_input" value="{{favorite.recipe_name}}"> View Recipe </button>
-                    </p>
-                </form>
-                <form action="/delete_favorite" method="POST">
-                    <button type="submit" id="search_button" name="recipe_name" value="{{favorite.recipe_name}}"> Delete</button>
-                </form>
+            <div class="card">
+                <div class="card_description_header">{{favorite.recipe_name}}</div>
+                <div class="card_description">
+                    <form action="/get-food" method="GET">
+                        <p>
+                            <button type="submit" id="search_button" name="food_input" value="{{favorite.recipe_name}}">
+                                View Recipe </button>
+                        </p>
+                    </form>
+                    <form action="/delete_favorite" method="POST">
+                        <button type="submit" id="search_button" name="recipe_name" value="{{favorite.recipe_name}}">
+                            Delete</button>
+                    </form>
+                </div>
             </div>
-          </div> 
-          {% endfor %}
+            {% endfor %}
         </div>
-      </div>
- 		</div>	
-    
-
-
+    </div>
+    </div>
 
     {% with messages = get_flashed_messages() %}
     {% if messages %}
@@ -83,9 +88,6 @@
     {% endif %}
     {% endwith %}
 
-
-
-
-
 </body>
+
 </html>

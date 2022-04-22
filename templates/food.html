@@ -11,15 +11,21 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-        crossorigin="anonymous">
-    </script>
-    <style> body{background-color: lightgray;}</style>
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
+        </script>
+
+    <!--- Google Fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500&family=Zilla+Slab:ital@1&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/static/food.css">
     <title>Recipe details</title>
 </head>
 
 
 <body>
+    <!---Navbar--->
     <nav class="navbar sticky-top navbar-expand-md navbar-dark bg-dark">
         <a href="/meal_deck" class="navbar-brand">MealDeck</a>
 
@@ -50,84 +56,91 @@
     </nav>
 
 
+    <!---Different Search results--->
 
     <h2>Results for {{search_term}}</h2>
     {%for i in range(0, recipe_count)%}
-    <p>
-        <b>
-            <form method="POST" action="/add_favorite">
-                <input type="hidden" name="recipeName" value="{{recipe_titles[i]}}" readonly />
-            </form>
-            <div class="card" style="width: 18rem;">
-                <img src={{recipe_images[i]}} class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">{{recipe_titles[i]}}</h5>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item"> <button class="btn btn-outline-primary" type="submit" />
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-bookmark-check" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd"
-                                d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z" />
-                            <path
-                                d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z" />
-                        </svg>
-                        Add to favorites! </button>
-                    </li>
-                    <li class="list-group-item">
-                        <form method="POST" action="/add_plan">
-                            <input type="hidden" name="recipeName" value="{{recipe_titles[i]}}" readonly />
-                            <select name="day" required>
-                                <option value="" disabled selected>Choose a date</option>
-                                <option value="sunday"> Add to Sunday meal plan </option>
-                                <option value="monday"> Add to Monday meal plan </option>
-                                <option value="tuesday"> Add to Tuesday meal plan </option>
-                                <option value="wednesday"> Add to Wednesday meal plan </option>
-                                <option value="thursday"> Add to Thursday meal plan </option>
-                                <option value="friday"> Add to Friday meal plan </option>
-                                <option value="saturday"> Add to Saturday meal plan </option>
-                            </select>
-                            <button class="btn btn-outline-success" type="submit">
+    <article class="recipe">
+        <p>
+            <b>
+                <form method="POST" action="/add_favorite">
+                    <input type="hidden" name="recipeName" value="{{recipe_titles[i]}}" readonly />
+                </form>
+                <div class="card" style="width: 25rem; float: right; position: relative; top: 10%;">
+                    <img src={{recipe_images[i]}} class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">{{recipe_titles[i]}}</h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"> <button class="btn btn-outline-primary" type="submit" />
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-card-checklist" viewBox="0 0 16 16">
+                                class="bi bi-bookmark-check" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z" />
                                 <path
-                                    d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
-                                <path
-                                    d="M7 5.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0zM7 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0z" />
+                                    d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z" />
                             </svg>
-                            Add to MealPlan!</button>
-                        </form>
-                    </li>
-                </ul>
+                            Add to favorites! </button>
+                        </li>
+                        <li class="list-group-item">
+                            <form method="POST" action="/add_plan">
+                                <input type="hidden" name="recipeName" value="{{recipe_titles[i]}}" readonly />
+                                <select name="day" required>
+                                    <option value="" disabled selected>Choose a date</option>
+                                    <option value="sunday"> Add to Sunday meal plan </option>
+                                    <option value="monday"> Add to Monday meal plan </option>
+                                    <option value="tuesday"> Add to Tuesday meal plan </option>
+                                    <option value="wednesday"> Add to Wednesday meal plan </option>
+                                    <option value="thursday"> Add to Thursday meal plan </option>
+                                    <option value="friday"> Add to Friday meal plan </option>
+                                    <option value="saturday"> Add to Saturday meal plan </option>
+                                </select>
+                                <button class="btn btn-outline-success" type="submit">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-card-checklist" viewBox="0 0 16 16">
+                                        <path
+                                            d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
+                                        <path
+                                            d="M7 5.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0zM7 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0z" />
+                                    </svg>
+                                    Add to MealPlan!</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+
+
+            </b>
+        </p>
+
+        <!---Recipe ingredients and Recipe Directions--->
+        <div class="text-wrapper" id="recipe-text">
+            <div class="recipe-text">
+                <blockquote>
+                    <h2>{{recipe_titles[i]}}</h2>
+                </blockquote>
+                <div class="recipe-info">
+                    <div class="recipe-ingredients">
+                        <h2>Ingredients</h2>
+                        <ul class="list panel">
+                            {% for ingredient in recipe_ingredients[i] %}
+                            <li>{{ingredient}}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="recipe-directions">
+                        <h2>Directions</h2>
+                        <p id="directions">
+                            {% for instruction in recipe_instructions[i] %}
+                            <li>{{instruction}}</li>
+                            {% endfor %}
+                        </p>
+                    </div>
+                </div>
             </div>
-
-
-        </b>
-    </p>
-    <div class="card" style="width: 40rem;">
-        <div class="card-body">
-            <h5 class="card-title">Ingredients</h5>
-            <p class="card-text">
-                {% for ingredient in recipe_ingredients[i] %}
-                <li>{{ingredient}}</li>
-                {% endfor %}
-            </p>
         </div>
-    </div>
-    <div class="card" style="width: 50rem;">
-        <div class="card-body">
-            <h5 class="card-title">Instructions</h5>
-            <p class="card-text">
-            <ol>
-                {% for instruction in recipe_instructions[i] %}
-                <li>{{instruction}}</li>
-                {% endfor %}
-            </ol>
-            </p>
-        </div>
-    </div>
+    </article>
     {% endfor %}
-
 </body>
 
 </html>
