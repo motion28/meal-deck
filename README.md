@@ -1,4 +1,4 @@
-**CSC 4350 Spring 2022 Final Project Sprint 1**
+**CSC 4350 Spring 2022 Final Project Sprint 2**
 
 **MealDeck** by Moumin Ali, Augustine Li, Nestor Kaputo, and Kirtan Kabariya
 
