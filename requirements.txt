@@ -1,6 +1,7 @@
 Flask
 flask-login
 Flask-SQLAlchemy
+flask-unittest
 google-auth
 google-auth-oauthlib
 requests
