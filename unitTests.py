@@ -2,14 +2,16 @@
 # pylint: disable=line-too-long
 # pylint: disable=missing-docstring
 # pylint: disable=import-error
+# pylint: disable=E0202
 
 import unittest
 import pathlib
 import sys
 import os
-from login import load_user
-import patch
-
+from unittest.mock import patch
+import flask_unittest
+from main import load_user
+from main import meal_deck, login, callback, logout, index, get_food, add_favorite, add_plan, delete_favorite, delete_plan, get_favorites, get_plan
 from dotenv import find_dotenv, load_dotenv
 from main import get_food
 from models import User
@@ -70,7 +72,25 @@ class test_Get_food(unittest.TestCase):
                 },
             },
             {
+                INPUT: "bread, fish",
+                EXP_OUTPUT: {
+                    "title": "",
+                    "imageURL": "",
+                    "extendedIngredients": "",
+                    "analyzedInstructions": "",
+                },
+            },
+            {
                 INPUT: "1111",
+                EXP_OUTPUT: {
+                    "title": "",
+                    "imageURL": "",
+                    "extendedIngredients": "",
+                    "analyzedInstructions": "",
+                },
+            },
+            {
+                INPUT: "8",
                 EXP_OUTPUT: {
                     "title": "",
                     "imageURL": "",
@@ -129,4 +149,171 @@ class test_main_py(unittest.TestCase):
         self.assertNotEqual(session_key_exists, None)
 
     if __name__ == "__main__":
+        unittest.main()
+
+
+class TestFoo(flask_unittest.ClientTestCase):
+    app = meal_deck()
+    def setUp(self, client):
+        pass
+
+    def tearDown(self, client):
+        pass
+
+    def test_foo_with_client(self, client):
+        # Use the client here
+        check = client.get('/hello')
+        self.assertInResponse(check, 'hello world!')
+    
+    if __name__ == '__main__':
+        unittest.main()
+
+class TestFoo1(flask_unittest.ClientTestCase):
+    app = login()
+    def setUp(self, client):
+        pass
+
+    def tearDown(self, client):
+        pass
+
+    def test_foo_with_client(self, client):
+        # Use the client here
+        check = client.get('/hello')
+        self.assertInResponse(check, 'hello world!')
+    if __name__ == '__main__':
+        unittest.main()
+
+class TestFoo2(flask_unittest.ClientTestCase):
+    app = index()
+    def setUp(self, client):
+        pass
+
+    def tearDown(self, client):
+        pass
+
+    def test_foo_with_client(self, client):
+        # Use the client here
+        check = client.get('/hello')
+        self.assertInResponse(check, 'hello world!')
+    if __name__ == '__main__':
+        unittest.main()
+
+class TestFoo3(flask_unittest.ClientTestCase):
+    app = index()
+    def setUp(self, client):
+        pass
+
+    def tearDown(self, client):
+        pass
+
+    def test_foo_with_client(self, client):
+        # Use the client here
+        check = client.get('/hello')
+        self.assertInResponse(check, 'hello world!')
+    if __name__ == '__main__':
+        unittest.main()
+
+class TestFoo4(flask_unittest.ClientTestCase):
+    app = get_food()
+    def setUp(self, client):
+        pass
+
+    def tearDown(self, client):
+        pass
+
+    def test_foo_with_client(self, client):
+        # Use the client here
+        check = client.get('/hello')
+        self.assertInResponse(check, 'hello world!')
+    if __name__ == '__main__':
+        unittest.main()
+
+class TestFoo5(flask_unittest.ClientTestCase):
+    app = add_favorite()
+    def setUp(self, client):
+        pass
+
+    def tearDown(self, client):
+        pass
+
+    def test_foo_with_client(self, client):
+        # Use the client here
+        check = client.get('/hello')
+        self.assertInResponse(check, 'hello world!')
+    if __name__ == '__main__':
+        unittest.main()
+
+class TestFoo6(flask_unittest.ClientTestCase):
+    app = add_plan()
+    def setUp(self, client):
+        pass
+
+    def tearDown(self, client):
+        pass
+
+    def test_foo_with_client(self, client):
+        # Use the client here
+        check = client.get('/hello')
+        self.assertInResponse(check, 'hello world!')
+    if __name__ == '__main__':
+        unittest.main()
+
+class TestFoo7(flask_unittest.ClientTestCase):
+    app = delete_favorite()
+    def setUp(self, client):
+        pass
+
+    def tearDown(self, client):
+        pass
+
+    def test_foo_with_client(self, client):
+        # Use the client here
+        check = client.get('/hello')
+        self.assertInResponse(check, 'hello world!')
+    if __name__ == '__main__':
+        unittest.main()
+
+class TestFoo8(flask_unittest.ClientTestCase):
+    app = delete_plan()
+    def setUp(self, client):
+        pass
+
+    def tearDown(self, client):
+        pass
+
+    def test_foo_with_client(self, client):
+        # Use the client here
+        check = client.get('/hello')
+        self.assertInResponse(check, 'hello world!')
+    if __name__ == '__main__':
+        unittest.main()
+
+class TestFoo9(flask_unittest.ClientTestCase):
+    app = get_favorites()
+    def setUp(self, client):
+        pass
+
+    def tearDown(self, client):
+        pass
+
+    def test_foo_with_client(self, client):
+        # Use the client here
+        check = client.get('/hello')
+        self.assertInResponse(check, 'hello world!')
+    if __name__ == '__main__':
+        unittest.main()
+
+class TestFoo10(flask_unittest.ClientTestCase):
+    app = get_plan()
+    def setUp(self, client):
+        pass
+
+    def tearDown(self, client):
+        pass
+
+    def test_foo_with_client(self, client):
+        # Use the client here
+        check = client.get('/hello')
+        self.assertInResponse(check, 'hello world!')
+    if __name__ == '__main__':
         unittest.main()
