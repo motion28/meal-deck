@@ -4,9 +4,12 @@
 
 **NEW Deployment on Render: https://mealdeck.onrender.com/**
 
+(Please allow up to 30 seconds to load)
+
 Utilizes ElephantSQL (PostgreSQL) database.
 
-OLD Heroku Deployment Link **no longer works due to removal of free plan for PostgreSQL.**
+OLD Heroku Deployment Link **no longer works due to removal of free plan for Heroku and Heroku database.**
+
 ~~Heroku Deployment: https://rocky-basin-61067.herokuapp.com/~~
 
 If you get an url error when trying to log in via google, press back and try again. Sometimes Google API is slow for some reason.
