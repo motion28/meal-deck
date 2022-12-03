@@ -1,8 +1,12 @@
-**CSC 4350 Spring 2022 Final Project Sprint 2**
+## CSC 4350 Spring 2022 Final Project Sprint 2
 
 **MealDeck** by Moumin Ali, Augustine Li, Nestor Kaputo, and Kirtan Kabariya
 
-**Heroku Deployment: https://rocky-basin-61067.herokuapp.com/**
+**NEW Deployment on Render: https://mealdeck.onrender.com/
+Utilizes ElephantSQL (PostgreSQL) database.
+
+OLD Heroku Deployment Link **no longer works.**
+~~Heroku Deployment: https://rocky-basin-61067.herokuapp.com/~~
 
 If you get an url error when trying to log in via google, press back and try again. Sometimes Google API is slow for some reason.
 
