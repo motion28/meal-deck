@@ -6,7 +6,7 @@
 
 Utilizes ElephantSQL (PostgreSQL) database.
 
-OLD Heroku Deployment Link **no longer works.**
+OLD Heroku Deployment Link **no longer works due to removal of free plan for PostgreSQL.**
 ~~Heroku Deployment: https://rocky-basin-61067.herokuapp.com/~~
 
 If you get an url error when trying to log in via google, press back and try again. Sometimes Google API is slow for some reason.
